@@ -134,6 +134,8 @@ const About = () => {
               sx={{
                 width: 40,
                 height: 40,
+                minWidth: 40,
+                minHeight: 40,
                 borderRadius: '50%',
                 bgcolor: `${color}.main`,
                 display: 'flex',
@@ -141,9 +143,33 @@ const About = () => {
                 justifyContent: 'center',
                 color: 'white',
                 mr: 2,
+                flexShrink: 0,
+                '& svg': {
+                  width: '1.25rem',
+                  height: '1.25rem',
+                },
+                [theme.breakpoints.down('sm')]: {
+                  width: 36,
+                  height: 36,
+                  minWidth: 36,
+                  minHeight: 36,
+                  '& svg': {
+                    width: '1rem',
+                    height: '1rem',
+                  },
+                },
               }}
             >
-              {icon}
+              {React.cloneElement(icon, {
+                sx: {
+                  width: '1.25rem',
+                  height: '1.25rem',
+                  [theme.breakpoints.down('sm')]: {
+                    width: '1rem',
+                    height: '1rem',
+                  },
+                }
+              })}
             </Box>
             <Box>
               <Typography variant="h6" component="h3" sx={{ fontWeight: 600 }}>
