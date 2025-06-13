@@ -45,16 +45,14 @@ const Projects = () => {
       title: 'Custom Spotify Client',
       description: 'A responsive web application that interfaces with the Spotify Web API to provide a custom music streaming experience. Features include playlist management, track search, and playback controls with a modern UI built using React and TypeScript.',
       technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Spotify API', 'OAuth'],
-      image: 'https://via.placeholder.com/600x400',
       githubLink: 'https://github.com/NishTheFish-dev/custom-spotify-client',
       liveDemo: '#',
       featured: true
     },
     {
       title: 'YouTube Music Client',
-      description: 'A custom desktop client for YouTube Music with a focus on a clean, ad-free listening experience. Built to provide seamless music playback with a native app feel using modern web technologies.',
+      description: 'A custom desktop client for YouTube Music with a focus on a clean listening experience. Built to provide seamless music playback with a native app feel using modern web technologies.',
       technologies: ['Electron', 'React', 'TypeScript', 'YouTube Music API', 'Desktop App'],
-      image: 'https://via.placeholder.com/600x400',
       githubLink: 'https://github.com/NishTheFish-dev/custom-ytmusic-client',
       liveDemo: '#',
       featured: true
@@ -63,7 +61,6 @@ const Projects = () => {
       title: 'Python Bot Application',
       description: 'Created a Python bot which handles asynchronous requests from users and delivers appropriate content. Utilized the Discord API for request handling and Amazon AWS for asynchronous hosting.',
       technologies: ['Python', 'Discord API', 'AWS', 'Asynchronous Programming'],
-      image: 'https://via.placeholder.com/600x400',
       githubLink: '#',
       liveDemo: '#',
       featured: true
@@ -72,7 +69,6 @@ const Projects = () => {
       title: 'Helpdesk System',
       description: 'Created a Helpdesk application using Java and JavaFX to create a functional and smooth graphical user experience. Used the MVC (Model, View, Controller) Architecture and followed Agile software development conventions.',
       technologies: ['Java', 'JavaFX', 'MVC Architecture', 'Agile'],
-      image: 'https://via.placeholder.com/600x400',
       githubLink: '#',
       liveDemo: '#',
       featured: true
@@ -81,7 +77,6 @@ const Projects = () => {
       title: 'VR Bowling Game',
       description: 'Created a bowling game that allows users to play a realistic game of bowling using a VR headset. Utilized the Unity game engine and C# to allow for real-time user input and physics simulation.',
       technologies: ['Unity', 'C#', 'VR Development', 'Game Physics'],
-      image: 'https://via.placeholder.com/600x400',
       githubLink: '#',
       liveDemo: '#',
       featured: true
@@ -90,7 +85,6 @@ const Projects = () => {
       title: 'Virtual Board Game Concept',
       description: 'Worked on a team designing a board game for elementary and middle school students to connect with over COVID. Developed a project timeline and design specification according to user needs. Received Grand Prize award and recognition letter from AZ Congressman David Schweikert.',
       technologies: ['Game Design', 'Project Management', 'User-Centered Design'],
-      image: 'https://via.placeholder.com/600x400',
       githubLink: '#',
       liveDemo: '#',
       featured: false
