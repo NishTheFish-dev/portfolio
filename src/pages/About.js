@@ -76,7 +76,6 @@ const About = () => {
       description: [
         'Dean\'s List Awardee, 3.67 GPA',
         'Relevant Coursework: Data Structures and Algorithms, Information Assurance, Foundations of Machine Learning',
-        'Activities: Cybersecurity Club, Software Developers Association'
       ],
       icon: <SchoolIcon />,
       color: 'secondary',
@@ -88,8 +87,6 @@ const About = () => {
       period: 'Graduated May 2024',
       description: [
         '3.5 GPA',
-        'Phi Theta Kappa Honor Society Member',
-        'Computer Science Club President'
       ],
       icon: <SchoolIcon />,
       color: 'secondary',
