@@ -1,29 +1,24 @@
-# Personal Portfolio Website
+# Nishanth Pallapu - Portfolio
 
-A modern, responsive portfolio website built with React.js and Material-UI. This portfolio showcases my projects, skills, and experience in an elegant and professional manner.
+A modern, responsive portfolio website showcasing my work as a Computer Science student at ASU. The site highlights my projects, technical skills, and experience in software development, game development, and information security.
 
 ## Features
 
-- Responsive design that works on all devices
-- Modern UI with smooth animations
-- Project showcase with GitHub integration
-- Skills and experience section
-- Contact form with social media links
-- Dark mode theme
+- Responsive design optimized for all devices
+- Interactive UI with smooth animations using Framer Motion
+- Project showcase with technology tags and GitHub links
+- Skills section highlighting technical expertise
+- Contact information with professional links
 
 ## Technologies Used
 
-- React.js
-- Material-UI
-- React Router
-- Framer Motion
-- Styled Components
+- React.js with React Router for navigation
+- Material-UI for component library and theming
+- Framer Motion for animations and transitions
+- React Icons for scalable vector icons
+- GitHub API integration for project data
+- Responsive design with CSS Grid and Flexbox
 
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Contact
 
-## Customization
-
-1. Update the project information in `src/pages/Projects.js`
-2. Modify the skills and experience in `src/pages/About.js`
-3. Update social media links in `src/pages/Contact.js`
-4. Customize the theme in `src/App.js`
+For inquiries or collaboration opportunities, please visit the Contact section of the website.
