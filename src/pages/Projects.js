@@ -14,7 +14,6 @@ import {
 } from '@mui/material';
 import { motion } from 'framer-motion';
 import GitHubIcon from '@mui/icons-material/GitHub';
-import LaunchIcon from '@mui/icons-material/Launch';
 import CodeIcon from '@mui/icons-material/Code';
 
 const Projects = () => {
@@ -46,7 +45,6 @@ const Projects = () => {
       description: 'A responsive web application that interfaces with the Spotify Web API to provide a custom music streaming experience. Features include playlist management, track search, and playback controls with a modern UI built using React and TypeScript.',
       technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Spotify API', 'OAuth'],
       githubLink: 'https://github.com/NishTheFish-dev/custom-spotify-client',
-      liveDemo: '#',
       featured: true
     },
     {
@@ -54,15 +52,13 @@ const Projects = () => {
       description: 'A custom desktop client for YouTube Music with a focus on a clean listening experience. Built to provide seamless music playback with a native app feel using modern web technologies.',
       technologies: ['Electron', 'React', 'TypeScript', 'YouTube Music API', 'Desktop App'],
       githubLink: 'https://github.com/NishTheFish-dev/custom-ytmusic-client',
-      liveDemo: '#',
       featured: true
     },
     {
       title: 'Python Bot Application',
       description: 'Created a Python bot which handles asynchronous requests from users and delivers appropriate content. Utilized the Discord API for request handling and Amazon AWS for asynchronous hosting.',
       technologies: ['Python', 'Discord API', 'AWS', 'Asynchronous Programming'],
-      githubLink: '#',
-      liveDemo: '#',
+      githubLink: 'https://github.com/NishTheFish-dev/The-Farmer',
       featured: true
     },
     {
@@ -70,7 +66,6 @@ const Projects = () => {
       description: 'Created a Helpdesk application using Java and JavaFX to create a functional and smooth graphical user experience. Used the MVC (Model, View, Controller) Architecture and followed Agile software development conventions.',
       technologies: ['Java', 'JavaFX', 'MVC Architecture', 'Agile'],
       githubLink: '#',
-      liveDemo: '#',
       featured: true
     },
     {
@@ -78,7 +73,6 @@ const Projects = () => {
       description: 'Created a bowling game that allows users to play a realistic game of bowling using a VR headset. Utilized the Unity game engine and C# to allow for real-time user input and physics simulation.',
       technologies: ['Unity', 'C#', 'VR Development', 'Game Physics'],
       githubLink: '#',
-      liveDemo: '#',
       featured: true
     },
     {
@@ -86,7 +80,6 @@ const Projects = () => {
       description: 'Worked on a team designing a board game for elementary and middle school students to connect with over COVID. Developed a project timeline and design specification according to user needs. Received Grand Prize award and recognition letter from AZ Congressman David Schweikert.',
       technologies: ['Game Design', 'Project Management', 'User-Centered Design'],
       githubLink: '#',
-      liveDemo: '#',
       featured: false
     },
   ];
@@ -206,7 +199,7 @@ const Projects = () => {
                   <CardActions sx={{ p: 2, pt: 0 }}>
                     <Button
                       startIcon={<GitHubIcon />}
-                      href={project.githubUrl}
+                      href={project.githubLink}
                       target="_blank"
                       rel="noopener noreferrer"
                       size="small"
@@ -220,23 +213,6 @@ const Projects = () => {
                       }}
                     >
                       Code
-                    </Button>
-                    <Button
-                      startIcon={<LaunchIcon fontSize="small" />}
-                      href={project.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      size="small"
-                      sx={{
-                        textTransform: 'none',
-                        fontWeight: 500,
-                        color: 'text.secondary',
-                        '&:hover': {
-                          color: 'primary.main',
-                        },
-                      }}
-                    >
-                      Live Demo
                     </Button>
                   </CardActions>
                 </Card>
