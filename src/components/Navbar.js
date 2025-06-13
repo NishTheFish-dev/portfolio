@@ -77,21 +77,49 @@ const Navbar = () => {
             sx={{
               borderRadius: 2,
               mb: 1,
-              '&.Mui-selected': {
-                background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-                color: 'white',
-                '&:hover': {
-                  background: `linear-gradient(90deg, ${theme.palette.primary.dark}, ${theme.palette.secondary.dark})`,
-                }
+              textDecoration: 'none',
+              '&:hover': {
+                background: 'transparent',
+              },
+              '&:active': {
+                background: 'transparent',
+              },
+              '&:focus': {
+                background: 'transparent',
               },
             }}
-            selected={location.pathname === item.path}
           >
             <ListItemText 
-              primary={item.text} 
+              primary={
+                <Typography 
+                  variant="body1"
+                  sx={{
+                    fontWeight: location.pathname === item.path ? 700 : 500,
+                    background: location.pathname === item.path
+                      ? `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`
+                      : 'none',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: location.pathname === item.path 
+                      ? 'transparent' 
+                      : theme.palette.text.primary,
+                    display: 'inline-block',
+                    '&:hover': {
+                      background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                    },
+                    '&:active': {
+                      background: `linear-gradient(90deg, ${theme.palette.primary.dark}, ${theme.palette.secondary.dark})`,
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                    },
+                  }}
+                >
+                  {item.text}
+                </Typography>
+              }
               primaryTypographyProps={{
-                fontWeight: 500,
-                variant: 'body1',
+                component: 'div',
               }}
             />
           </ListItem>

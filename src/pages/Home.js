@@ -4,7 +4,6 @@ import {
   Container,
   Typography,
   Box,
-  Grid,
   Card,
   Button,
   useTheme,
@@ -180,52 +179,55 @@ const Home = () => {
               </Typography>
             </Box>
             
-            <Grid container spacing={4} sx={{ px: { xs: 2, sm: 4 } }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', px: { xs: 2, sm: 4 } }}>
               {skills.map((skill, index) => (
-                <Grid item xs={12} sm={6} md={3} key={index}>
-                  <motion.div
-                    variants={fadeInUp}
-                    whileHover={{ y: -5 }}
-                    transition={{ duration: 0.3 }}
+                <motion.div
+                  key={index}
+                  variants={fadeInUp}
+                  whileHover={{ y: -5 }}
+                  transition={{ duration: 0.3 }}
+                  style={{ width: '100%', maxWidth: '600px', marginBottom: '2rem' }}
+                >
+                  <Card 
+                    elevation={0}
+                    sx={{
+                      width: '100%',
+                      minHeight: '200px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      p: 3,
+                      borderRadius: 3,
+                      background: theme.palette.mode === 'dark' 
+                        ? alpha(theme.palette.background.paper, 0.8)
+                        : alpha(theme.palette.background.paper, 0.9),
+                      backdropFilter: 'blur(10px)'
+                    }}
                   >
-                    <Card 
-                      elevation={0}
+                    <Box 
                       sx={{
-                        height: '100%',
-                        p: 3,
-                        borderRadius: 3,
-                        background: theme.palette.mode === 'dark' 
-                          ? alpha(theme.palette.background.paper, 0.8)
-                          : alpha(theme.palette.background.paper, 0.9),
-                        backdropFilter: 'blur(10px)'
+                        width: 60,
+                        height: 60,
+                        borderRadius: '50%',
+                        bgcolor: `${skill.color}.main`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: 'white',
+                        mb: 2,
                       }}
                     >
-                      <Box 
-                        sx={{
-                          width: 60,
-                          height: 60,
-                          borderRadius: '50%',
-                          bgcolor: `${skill.color}.main`,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          color: 'white',
-                          mb: 2,
-                        }}
-                      >
-                        {skill.icon}
-                      </Box>
-                      <Typography variant="h6" component="h3" sx={{ fontWeight: 600, mb: 1 }}>
-                        {skill.title}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {skill.description}
-                      </Typography>
-                    </Card>
-                  </motion.div>
-                </Grid>
+                      {skill.icon}
+                    </Box>
+                    <Typography variant="h6" component="h3" sx={{ fontWeight: 600, mb: 1, wordBreak: 'break-word' }}>
+                      {skill.title}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ wordBreak: 'break-word' }}>
+                      {skill.description}
+                    </Typography>
+                  </Card>
+                </motion.div>
               ))}
-            </Grid>
+            </Box>
           </Box>
         </motion.div>
       </motion.div>
