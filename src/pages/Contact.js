@@ -49,8 +49,8 @@ const Contact = () => {
     {
       icon: <EmailIcon fontSize="large" color="primary" />,
       title: 'Email',
-      text: 'npallapu@asu.edu',
-      url: 'mailto:npallapu@asu.edu',
+      text: 'nishpallapu@gmail.com',
+      url: 'mailto:nishpallapu@gmail.com',
     },
     {
       icon: <PhoneIcon fontSize="large" color="primary" />,
