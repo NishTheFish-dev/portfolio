@@ -2,167 +2,353 @@ import React from 'react';
 import {
   Container,
   Typography,
-  Grid,
   Paper,
   Box,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
+  useTheme,
+  alpha,
+  Grid,
+  Card,
+  CardContent,
+  Chip
 } from '@mui/material';
 import { motion } from 'framer-motion';
-import CodeIcon from '@mui/icons-material/Code';
 import SchoolIcon from '@mui/icons-material/School';
 import WorkIcon from '@mui/icons-material/Work';
+import CodeIcon from '@mui/icons-material/Code';
 
 const About = () => {
+  const theme = useTheme();
+  
   const skills = [
-    'JavaScript/TypeScript',
+    'Java',
+    'Python',
+    'C#',
+    'JavaScript',
+    'C++',
     'React.js',
     'Node.js',
-    'Python',
-    'SQL/NoSQL',
-    'Git',
-    'Docker',
+    'HTML/CSS',
+    'JavaFX',
+    'Unity Engine',
+    'Git/GitHub',
     'AWS',
+    'Linux/Unix',
+    'Network Security',
+    'Cryptography',
+    'Data Structures',
+    'Algorithms',
+    'Agile Development'
   ];
 
   const experiences = [
     {
-      title: 'Senior Developer',
-      company: 'Tech Company',
-      period: '2020 - Present',
-      description: 'Led development of multiple full-stack applications.',
+      title: 'Undergraduate Teaching Assistant',
+      company: 'Arizona State University - CSE365',
+      period: 'Jan 2025 – May 2025',
+      description: [
+        'Assisted a class of ~900 students with coursework in Information Assurance.',
+        'Taught topics including Network Security, Cryptography, Assembly, Penetration Testing, Reverse Engineering, and Binary Exploitation using the pwn.college platform with a capture-the-flag format.',
+        'Achieved A+ in the class with 110% to qualify as a TA.',
+      ],
+      icon: <WorkIcon />,
+      color: 'primary',
     },
     {
-      title: 'Full Stack Developer',
-      company: 'Startup Inc',
-      period: '2018 - 2020',
-      description: 'Developed and maintained web applications using React and Node.js.',
+      title: 'Software Engineering Intern',
+      company: 'Equity Methods, Scottsdale, AZ',
+      period: 'Apr 2021 – Sep 2021',
+      description: [
+        'Worked on providing equity-based compensation solutions.',
+        'Utilized Python with NumPy and Pandas to process large financial datasets and calculate amortization values.',
+        'Improved financial reporting accuracy of the main reporting model from 87% to 90% during the internship period.',
+      ],
+      icon: <WorkIcon />,
+      color: 'primary',
     },
   ];
 
   const education = [
     {
-      degree: 'Bachelor of Science in Computer Science',
-      school: 'University Name',
-      period: '2014 - 2018',
+      title: 'Bachelor of Science in Computer Science',
+      degree: 'B.S. Computer Science',
+      school: 'Arizona State University, Tempe, AZ',
+      period: 'Expected May 2026',
+      description: [
+        'Dean\'s List Awardee, 3.67 GPA',
+        'Relevant Coursework: Data Structures and Algorithms, Information Assurance, Foundations of Machine Learning',
+        'Activities: Cybersecurity Club, Software Developers Association'
+      ],
+      icon: <SchoolIcon />,
+      color: 'secondary',
+    },
+    {
+      title: 'Associate of Science in Computer Science',
+      degree: 'A.S. Computer Science',
+      school: 'Paradise Valley Community College, Phoenix, AZ',
+      period: 'Graduated May 2024',
+      description: [
+        '3.5 GPA',
+        'Phi Theta Kappa Honor Society Member',
+        'Computer Science Club President'
+      ],
+      icon: <SchoolIcon />,
+      color: 'secondary',
     },
   ];
 
-  return (
-    <Container maxWidth="lg" sx={{ py: 8 }}>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <Typography variant="h3" component="h1" gutterBottom align="center">
-          About Me
-        </Typography>
-        <Typography variant="h6" color="text.secondary" paragraph align="center">
-          Full Stack Developer with a passion for creating efficient and scalable applications
-        </Typography>
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  };
 
-        <Grid container spacing={4} sx={{ mt: 4 }}>
-          {/* Skills Section */}
+  const stagger = {
+    visible: {
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const ExperienceCard = ({ title, company, school, degree, period, description, icon, color }) => (
+    <motion.div variants={fadeInUp}>
+      <Card 
+        elevation={0}
+        sx={{
+          mb: 3,
+          borderRadius: 3,
+          background: theme.palette.mode === 'dark' 
+            ? alpha(theme.palette.background.paper, 0.8)
+            : alpha(theme.palette.background.paper, 0.9),
+          backdropFilter: 'blur(10px)',
+          border: '1px solid',
+          borderColor: theme.palette.mode === 'dark' 
+            ? 'rgba(255, 255, 255, 0.1)' 
+            : 'rgba(0, 0, 0, 0.1)',
+          transition: 'all 0.3s ease-in-out',
+          '&:hover': {
+            transform: 'translateY(-4px)',
+            boxShadow: theme.shadows[6],
+          },
+        }}
+      >
+        <CardContent>
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+            <Box 
+              sx={{
+                width: 40,
+                height: 40,
+                borderRadius: '50%',
+                bgcolor: `${color}.main`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'white',
+                mr: 2,
+              }}
+            >
+              {icon}
+            </Box>
+            <Box>
+              <Typography variant="h6" component="h3" sx={{ fontWeight: 600 }}>
+                {degree || title}
+              </Typography>
+              <Typography variant="subtitle1" color={color}>
+                {company || school}
+              </Typography>
+            </Box>
+          </Box>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 1, fontStyle: 'italic' }}>
+            {period}
+          </Typography>
+          <Box component="ul" sx={{ pl: 2, mt: 1, mb: 0 }}>
+            {Array.isArray(description) ? (
+              description.map((item, index) => (
+                <Typography 
+                  key={index} 
+                  component="li" 
+                  variant="body1" 
+                  sx={{ lineHeight: 1.7, mb: 0.5 }}
+                >
+                  {item}
+                </Typography>
+              ))
+            ) : (
+              <Typography 
+                component="li" 
+                variant="body1" 
+                sx={{ lineHeight: 1.7 }}
+              >
+                {description}
+              </Typography>
+            )}
+          </Box>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+
+  return (
+    <Container maxWidth="lg" sx={{ py: { xs: 4, md: 8 } }}>
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={stagger}
+      >
+        <motion.div variants={fadeInUp}>
+          <Typography 
+            variant="h3" 
+            component="h1" 
+            gutterBottom 
+            align="center"
+            sx={{
+              fontWeight: 700,
+              background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              mb: 2,
+            }}
+          >
+            About Me
+          </Typography>
+          <Typography 
+            variant="h6" 
+            color="text.secondary" 
+            paragraph 
+            align="center"
+            sx={{
+              maxWidth: '700px',
+              mx: 'auto',
+              mb: 6,
+              lineHeight: 1.7,
+            }}
+          >
+            Passionate Full Stack Developer with a keen eye for creating efficient,
+            scalable, and user-friendly applications. I love turning complex problems
+            into simple, beautiful, and intuitive solutions.
+          </Typography>
+        </motion.div>
+
+        <Grid container spacing={4}>
+          <Grid item xs={12} md={8}>
+            <motion.div variants={fadeInUp}>
+              {/* Experience Section */}
+              <Box sx={{ mb: 6 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+                  <WorkIcon 
+                    sx={{ 
+                      mr: 2, 
+                      color: 'primary.main',
+                      fontSize: '2rem',
+                    }} 
+                  />
+                  <Typography 
+                    variant="h4" 
+                    component="h2"
+                    sx={{
+                      fontWeight: 600,
+                      background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                    }}
+                  >
+                    Experience
+                  </Typography>
+                </Box>
+                {experiences.map((item, index) => (
+                  <ExperienceCard key={`exp-${index}`} {...item} />
+                ))}
+              </Box>
+
+              {/* Education Section */}
+              <Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+                  <SchoolIcon 
+                    sx={{ 
+                      mr: 2, 
+                      color: 'secondary.main',
+                      fontSize: '2rem',
+                    }} 
+                  />
+                  <Typography 
+                    variant="h4" 
+                    component="h2"
+                    sx={{
+                      fontWeight: 600,
+                      background: `linear-gradient(90deg, ${theme.palette.secondary.main}, ${theme.palette.primary.main})`,
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                    }}
+                  >
+                    Education
+                  </Typography>
+                </Box>
+                {education.map((item, index) => (
+                  <ExperienceCard key={`edu-${index}`} {...item} />
+                ))}
+              </Box>
+            </motion.div>
+          </Grid>
+
           <Grid item xs={12} md={4}>
-            <Paper sx={{ p: 3, height: '100%' }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                <CodeIcon sx={{ mr: 1 }} />
-                <Typography variant="h5" component="h2">
+            <motion.div variants={fadeInUp}>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+                <CodeIcon 
+                  sx={{ 
+                    mr: 2, 
+                    color: 'primary.main',
+                    fontSize: '2rem',
+                  }} 
+                />
+                <Typography 
+                  variant="h4" 
+                  component="h2"
+                  sx={{
+                    fontWeight: 600,
+                    background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                  }}
+                >
                   Skills
                 </Typography>
               </Box>
-              <Grid container spacing={1}>
-                {skills.map((skill) => (
-                  <Grid item xs={6} key={skill}>
-                    <Typography variant="body1">• {skill}</Typography>
-                  </Grid>
-                ))}
-              </Grid>
-            </Paper>
-          </Grid>
-
-          {/* Experience Section */}
-          <Grid item xs={12} md={8}>
-            <Paper sx={{ p: 3, height: '100%' }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                <WorkIcon sx={{ mr: 1 }} />
-                <Typography variant="h5" component="h2">
-                  Experience
-                </Typography>
-              </Box>
-              <List>
-                {experiences.map((exp, index) => (
-                  <ListItem key={index} alignItems="flex-start">
-                    <ListItemText
-                      primary={
-                        <Typography variant="h6">
-                          {exp.title} at {exp.company}
-                        </Typography>
-                      }
-                      secondary={
-                        <>
-                          <Typography
-                            component="span"
-                            variant="body2"
-                            color="text.secondary"
-                          >
-                            {exp.period}
-                          </Typography>
-                          <Typography variant="body1" sx={{ mt: 1 }}>
-                            {exp.description}
-                          </Typography>
-                        </>
-                      }
+              <Paper 
+                elevation={0}
+                sx={{
+                  p: 3,
+                  borderRadius: 3,
+                  background: theme.palette.mode === 'dark' 
+                    ? alpha(theme.palette.background.paper, 0.8)
+                    : alpha(theme.palette.background.paper, 0.9),
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid',
+                  borderColor: theme.palette.mode === 'dark' 
+                    ? 'rgba(255, 255, 255, 0.1)' 
+                    : 'rgba(0, 0, 0, 0.1)',
+                  height: '100%',
+                }}
+              >
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                  {skills.map((skill, index) => (
+                    <Chip 
+                      key={index} 
+                      label={skill} 
+                      color="primary" 
+                      variant="outlined"
+                      sx={{ 
+                        mb: 1,
+                        cursor: 'default',
+                        '&:hover': {
+                          bgcolor: 'primary.main',
+                          color: 'white',
+                        },
+                        transition: 'all 0.2s',
+                      }}
                     />
-                  </ListItem>
-                ))}
-              </List>
-            </Paper>
-          </Grid>
-
-          {/* Education Section */}
-          <Grid item xs={12}>
-            <Paper sx={{ p: 3 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                <SchoolIcon sx={{ mr: 1 }} />
-                <Typography variant="h5" component="h2">
-                  Education
-                </Typography>
-              </Box>
-              <List>
-                {education.map((edu, index) => (
-                  <ListItem key={index}>
-                    <ListItemText
-                      primary={
-                        <Typography variant="h6">{edu.degree}</Typography>
-                      }
-                      secondary={
-                        <>
-                          <Typography
-                            component="span"
-                            variant="body2"
-                            color="text.secondary"
-                          >
-                            {edu.school}
-                          </Typography>
-                          <br />
-                          <Typography
-                            component="span"
-                            variant="body2"
-                            color="text.secondary"
-                          >
-                            {edu.period}
-                          </Typography>
-                        </>
-                      }
-                    />
-                  </ListItem>
-                ))}
-              </List>
-            </Paper>
+                  ))}
+                </Box>
+              </Paper>
+            </motion.div>
           </Grid>
         </Grid>
       </motion.div>
