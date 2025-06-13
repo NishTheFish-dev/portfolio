@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider, createTheme, useTheme } from '@mui/material/styles';
 import { Box, Typography } from '@mui/material';
+import { Analytics } from '@vercel/analytics/react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
@@ -68,6 +69,7 @@ function App() {
             </Routes>
           </Box>
           <Footer />
+          <Analytics />
         </Box>
       </Router>
     </ThemeProvider>
