@@ -99,23 +99,10 @@ const Contact = () => {
                 background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
-                mb: 2,
+                mb: 4,
               }}
             >
-              Get In Touch
-            </Typography>
-            <Typography 
-              variant="h6" 
-              color="text.secondary" 
-              paragraph
-              sx={{
-                maxWidth: '700px',
-                mx: 'auto',
-                lineHeight: 1.7,
-              }}
-            >
-              Have a project in mind or want to discuss potential opportunities? 
-              Feel free to reach out and let's create something amazing together.
+              Contact Information
             </Typography>
           </Box>
         </motion.div>
@@ -140,11 +127,8 @@ const Contact = () => {
                 }}
               >
                 <Box textAlign="center" mb={6}>
-                  <Typography variant="h4" component="h2" sx={{ mb: 2, fontWeight: 700 }}>
-                    Contact Information
-                  </Typography>
                   <Typography variant="body1" color="text.secondary" sx={{ maxWidth: '700px', mx: 'auto' }}>
-                    Feel free to reach out through any of these channels. I'll get back to you as soon as possible.
+                    Feel free to reach out through any of these channels!
                   </Typography>
                 </Box>
                 

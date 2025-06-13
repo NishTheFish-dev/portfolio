@@ -210,7 +210,6 @@ const About = () => {
           <Typography 
             variant="h6" 
             color="text.secondary" 
-            paragraph 
             align="center"
             sx={{
               maxWidth: '700px',
@@ -219,7 +218,7 @@ const About = () => {
               lineHeight: 1.7,
             }}
           >
-            Passionate Full Stack Developer with a keen eye for creating efficient,
+            Senior ASU Computer Science student with a keen eye for creating efficient,
             scalable, and user-friendly applications. I love turning complex problems
             into simple, beautiful, and intuitive solutions.
           </Typography>
