@@ -49,8 +49,8 @@ const Contact = () => {
     {
       icon: <EmailIcon fontSize="large" color="primary" />,
       title: 'Email',
-      text: 'nishpallapu@gmail.com',
-      url: 'mailto:nishpallapu@gmail.com',
+      text: 'contact@nishpallapu.com',
+      url: 'mailto:contact@nishpallapu.com',
     },
     {
       icon: <PhoneIcon fontSize="large" color="primary" />,
