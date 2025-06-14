@@ -111,7 +111,7 @@ const Home = () => {
                 lineHeight: 1.7,
               }}
             >
-              Computer Science Junior at ASU with experience in Python, Java, and C# development. Passionate about software engineering, game development, and information security.
+              Computer Science Senior at ASU with experience in Python, Java, and C# development. Passionate about software engineering, game development, and information security.
             </Typography>
             <Box sx={{ mt: 4, display: 'flex', flexWrap: 'wrap', gap: 2, justifyContent: 'center' }}>
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
