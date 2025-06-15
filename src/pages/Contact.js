@@ -72,13 +72,7 @@ const Contact = () => {
       url: 'https://www.linkedin.com/in/nishanth-pallapu',
       label: 'LinkedIn',
       color: '#0A66C2',
-    },
-    {
-      icon: <EmailIcon />,
-      url: 'mailto:npallapu@asu.edu',
-      label: 'Email',
-      color: '#EA4335',
-    },
+    }
   ];
 
   return (
