@@ -122,7 +122,7 @@ const Projects = () => {
               lineHeight: 1.7,
             }}
           >
-            Here are some of my recent works. Each project showcases different skills and technologies I've worked with.
+            Here are some of my recent works. Each project showcases different skills and technologies I've worked with. Click on a project to learn more!
           </Typography>
         </motion.div>
 

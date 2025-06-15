@@ -27,38 +27,78 @@ const projectsData = [
   {
     slug: 'custom-spotify-client',
     title: 'Custom Spotify Client',
-    description: 'A responsive web application that interfaces with the Spotify Web API to provide a custom music streaming experience. Features include playlist management, track search, and playback controls with a modern UI built using React and TypeScript.',
-    technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Spotify API', 'OAuth'],
+    description: 'A responsive web application that interfaces with the Spotify Web API to provide a custom music streaming experience with a modern UI built using React and TypeScript.',
+    longDescription: `A feature-rich Spotify client built with React and TypeScript that provides a seamless music streaming experience. This application leverages the Spotify Web API and Web Playback SDK to deliver a responsive and interactive interface for Spotify Premium users. The app follows modern web development practices with a clean, component-based architecture and responsive design that works across all device sizes.
+
+Key aspects of this project include implementing secure OAuth 2.0 authentication with PKCE flow, managing application state with React hooks, and creating a responsive UI with Tailwind CSS. The application demonstrates proficiency in working with external APIs, handling user authentication, and creating dynamic, interactive web applications.`,
+    technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Spotify API', 'OAuth 2.0', 'Spotify Web Playback SDK'],
     githubLink: 'https://github.com/NishTheFish-dev/custom-spotify-client',
     demoLink: '',
-    images: [],
+    images: [
+      { src: '/assets/spotify1.png', alt: 'Spotify Client Dashboard' },
+      { src: '/assets/spotify2.png', alt: 'Spotify Client Playlist View' }
+    ],
+    features: [
+      'Secure authentication using Spotify OAuth 2.0 with PKCE (Proof Key for Code Exchange) flow',
+      'Interactive dashboard to view and manage Spotify playlists',
+      'Detailed playlist view with track listings and added date information',
+      'Comprehensive search functionality to find tracks across Spotify\'s library',
+      'Full playback controls including play, pause, and skip (requires Spotify Premium)',
+      'Responsive design that works seamlessly on both desktop and mobile devices',
+      'Modern UI built with Tailwind CSS for a clean and intuitive user experience',
+      'Type-safe development with TypeScript for better code quality and maintainability'
+    ],
   },
   {
     slug: 'python-bot-application',
-    title: 'Python Bot Application',
-    description: 'Created a Python bot which handles asynchronous requests from users and delivers appropriate content. Utilized the Discord API for request handling and Amazon AWS for asynchronous hosting.',
-    technologies: ['Python', 'Discord API', 'AWS', 'Asynchronous Programming'],
+    title: 'Discord Farming Bot',
+    description: 'A feature-rich Discord bot that simulates a farming experience with an interactive economy, skill progression, and real-time crop management system.',
+    longDescription: `The Farmer is a sophisticated Discord bot that brings a complete farming simulation experience to Discord servers. Built using Python and the Discord.py library, this bot features a comprehensive farming system with real-time crop growth, an in-game economy, and a skill progression system. The bot was designed with scalability in mind, utilizing asynchronous programming patterns to handle multiple user requests efficiently.
+
+This project demonstrates my ability to create engaging, interactive experiences within the Discord platform. The bot includes features such as a dynamic economy system, inventory management, and a skill tree that allows players to specialize their farming approach. The codebase is structured using object-oriented principles, making it maintainable and extensible for future updates. The bot also includes a shop system, leaderboards, and various interactive commands that encourage community engagement and competition.`,
+    technologies: ['Python', 'Discord API', 'AWS', 'Asynchronous Programming', 'MongoDB', 'Object-Oriented Design'],
     githubLink: 'https://github.com/NishTheFish-dev/The-Farmer',
     demoLink: '',
-    images: [],
+    images: [
+      { src: '/assets/discordbot1.png', alt: 'Discord Bot Main Interface' },
+      { src: '/assets/discordbot2.png', alt: 'Discord Bot Farming Commands' }
+    ],
+    features: [
+      'Core farming system with multiple crop types and real-time growth mechanics',
+      'Dynamic economy system with crop selling and a virtual shop for seeds and upgrades',
+      'Inventory management system for tracking crops, seeds, and purchased items',
+      'Interactive UI with button-based controls and clean embed menus',
+      'Skill tree system with four upgradeable skills: Grow Rate, Crop Yield, Roll Luck, and XP per Harvest',
+      'Wealth leaderboard to track and compete with other players',
+      'Multiple biomes to unlock and farm in, each with unique characteristics',
+      'Chance-based mutation system for rare and valuable crop variants',
+      'Comprehensive help system and intuitive command structure',
+      'Asynchronous task handling for real-time crop growth and event processing'
+    ]
   },
   {
     slug: 'helpdesk-system',
-    title: 'Helpdesk System',
-    description: 'Created a Helpdesk application using Java and JavaFX to create a functional and smooth graphical user experience. Used the MVC (Model, View, Controller) Architecture and followed Agile software development conventions.',
-    technologies: ['Java', 'JavaFX', 'MVC Architecture', 'Agile'],
-    githubLink: '#',
+    title: 'Educational Helpdesk System',
+    description: 'A comprehensive helpdesk application designed for educational institutions, featuring role-based access control, help article management, and secure user authentication.',
+    longDescription: `The Educational Helpdesk System is a robust Java application built with JavaFX that provides a complete solution for managing help requests and knowledge base articles in an educational setting. The system implements a multi-tier architecture with a clear separation of concerns using the MVC (Model-View-Controller) pattern. It was developed following Agile methodologies with a focus on security, usability, and maintainability.
+
+Key technical aspects of this project include secure password hashing, role-based access control (supporting Students, Instructors, and Administrators), and a comprehensive help article system with different expertise levels. The application features a responsive JavaFX interface with modern UI components and follows best practices in software engineering, including proper exception handling, logging, and documentation. The system also includes database functionality using H2, with capabilities for data backup and restoration.`,
+    technologies: ['Java', 'JavaFX', 'MVC Architecture', 'H2 Database', 'Agile Development', 'Role-Based Access Control'],
+    githubLink: 'https://github.com/NishTheFish-dev/CSE360-Group-Tu27',
     demoLink: '',
     images: [],
-  },
-  {
-    slug: 'vr-bowling-game',
-    title: 'VR Bowling Game',
-    description: 'Created a bowling game that allows users to play a realistic game of bowling using a VR headset. Utilized the Unity game engine and C# to allow for real-time user input and physics simulation.',
-    technologies: ['Unity', 'C#', 'VR Development', 'Game Physics'],
-    githubLink: '#',
-    demoLink: '',
-    images: [],
+    features: [
+      'Role-based access control with three distinct user types: Students, Instructors, and Administrators',
+      'Secure authentication system with password reset functionality and one-time passwords',
+      'Comprehensive help article system with different expertise levels (beginner, intermediate, advanced, expert)',
+      'Database management with H2 for storing user accounts and help articles',
+      'Data encryption for sensitive information and secure password storage',
+      'Backup and restore functionality for database management',
+      'Responsive JavaFX user interface with intuitive navigation',
+      'Admin dashboard for user management and system configuration',
+      'Article management system for creating, editing, and organizing help content',
+      'Role-appropriate views and functionality for each user type'
+    ]
   },
   {
     slug: 'virtual-board-game-concept',
@@ -67,7 +107,9 @@ const projectsData = [
     technologies: ['Game Design', 'Project Management', 'User-Centered Design'],
     githubLink: '#',
     demoLink: '',
-    images: [],
+    images: [
+      { src: '/assets/concept1.jpg', alt: 'Virtual Board Game Concept Design' }
+    ],
   },
 ];
 

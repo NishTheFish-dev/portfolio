@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Container,
   Typography,
@@ -9,12 +9,21 @@ import {
   Grid,
   Card,
   CardContent,
-  Chip
+  Chip,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  useMediaQuery,
+  Skeleton
 } from '@mui/material';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import SchoolIcon from '@mui/icons-material/School';
 import WorkIcon from '@mui/icons-material/Work';
 import CodeIcon from '@mui/icons-material/Code';
+import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
+import CloseIcon from '@mui/icons-material/Close';
+import certificationsData from '../data/certificationsData';
 
 const About = () => {
   const theme = useTheme();
@@ -210,6 +219,24 @@ const About = () => {
     </motion.div>
   );
 
+  const [selectedCert, setSelectedCert] = useState(null);
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const [loading, setLoading] = useState(true);
+
+  const handleCertClick = (cert) => {
+    setSelectedCert(cert);
+  };
+
+  const handleClose = () => {
+    setSelectedCert(null);
+  };
+
+  // Simulate loading
+  React.useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <Container maxWidth="lg" sx={{ py: { xs: 4, md: 8 } }}>
       <motion.div
@@ -370,6 +397,194 @@ const About = () => {
                   ))}
                 </Box>
               </Paper>
+
+              {/* Certifications Section */}
+              <Box sx={{ mt: 4 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 3, mt: 4 }}>
+                  <CardGiftcardIcon 
+                    sx={{ 
+                      mr: 2, 
+                      color: 'secondary.main',
+                      fontSize: '2rem',
+                    }} 
+                  />
+                  <Typography 
+                    variant="h4" 
+                    component="h2"
+                    sx={{
+                      fontWeight: 600,
+                      background: `linear-gradient(90deg, ${theme.palette.secondary.main}, ${theme.palette.primary.main})`,
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                    }}
+                  >
+                    Certifications
+                  </Typography>
+                </Box>
+                <Box sx={{ width: '100%' }}>
+                  {certificationsData.map((cert) => (
+                    <motion.div
+                      key={cert.id}
+                      whileHover={{ x: 5 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => handleCertClick(cert)}
+                      style={{ marginBottom: '12px' }}
+                    >
+                      <Card 
+                        elevation={0}
+                        sx={{
+                          borderRadius: 2,
+                          background: theme.palette.mode === 'dark' 
+                            ? alpha(theme.palette.background.paper, 0.8)
+                            : alpha(theme.palette.background.paper, 0.9),
+                          backdropFilter: 'blur(10px)',
+                          border: '1px solid',
+                          borderColor: theme.palette.mode === 'dark' 
+                            ? 'rgba(255, 255, 255, 0.1)' 
+                            : 'rgba(0, 0, 0, 0.1)',
+                          transition: 'all 0.2s ease-in-out',
+                          cursor: 'pointer',
+                          '&:hover': {
+                            borderColor: theme.palette.primary.main,
+                            boxShadow: theme.shadows[2],
+                          },
+                        }}
+                      >
+                        <CardContent sx={{ py: 1.5, px: 2, '&:last-child': { pb: 1.5 } }}>
+                          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                            <Box 
+                              sx={{ 
+                                width: 40, 
+                                height: 40, 
+                                borderRadius: '50%',
+                                overflow: 'hidden',
+                                mr: 2,
+                                flexShrink: 0
+                              }}
+                            >
+                              <img 
+                                src={cert.image} 
+                                alt={cert.title}
+                                style={{ 
+                                  width: '100%', 
+                                  height: '100%', 
+                                  objectFit: 'cover' 
+                                }} 
+                              />
+                            </Box>
+                            <Box sx={{ flex: 1, minWidth: 0 }}>
+                              <Typography 
+                                variant="subtitle2" 
+                                fontWeight={600}
+                                noWrap
+                                sx={{ fontSize: '0.9rem' }}
+                              >
+                                {cert.title}
+                              </Typography>
+                              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <Typography 
+                                  variant="caption" 
+                                  color="text.secondary"
+                                  noWrap
+                                  sx={{ 
+                                    fontSize: '0.75rem',
+                                    maxWidth: '60%'
+                                  }}
+                                >
+                                  {cert.issuer}
+                                </Typography>
+                                <Typography 
+                                  variant="caption" 
+                                  color="text.secondary"
+                                  sx={{ fontSize: '0.75rem' }}
+                                >
+                                  {cert.issueDate}
+                                </Typography>
+                              </Box>
+                            </Box>
+                          </Box>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  ))}
+                </Box>
+
+                {/* Certification Dialog */}
+                <Dialog 
+                  open={!!selectedCert} 
+                  onClose={handleClose}
+                  fullWidth
+                  maxWidth="sm"
+                  fullScreen={isMobile}
+                  PaperProps={{
+                    sx: {
+                      borderRadius: isMobile ? 0 : 2,
+                      bgcolor: 'background.paper',
+                      backgroundImage: 'none',
+                      boxShadow: '0 10px 30px rgba(0,0,0,0.15)'
+                    }
+                  }}
+                >
+                  <DialogTitle sx={{ 
+                    fontWeight: 600, 
+                    borderBottom: '1px solid', 
+                    borderColor: 'divider',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    py: 2
+                  }}>
+                    {selectedCert?.title || 'Certification Details'}
+                    <IconButton 
+                      onClick={handleClose}
+                      size="small"
+                      sx={{
+                        '&:hover': {
+                          bgcolor: 'action.hover'
+                        }
+                      }}
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                  </DialogTitle>
+                  <DialogContent sx={{ py: 3 }}>
+                    {selectedCert?.image && (
+                      <Box sx={{ mb: 3, borderRadius: 2, overflow: 'hidden', boxShadow: 2 }}>
+                        <img 
+                          src={selectedCert.image} 
+                          alt={selectedCert.title} 
+                          style={{ 
+                            width: '100%', 
+                            height: 'auto',
+                            display: 'block' 
+                          }} 
+                        />
+                      </Box>
+                    )}
+                    <Typography variant="body1" color="text.secondary" sx={{ mb: 2, lineHeight: 1.7 }}>
+                      {selectedCert?.description}
+                    </Typography>
+                    <Box sx={{ 
+                      mt: 3, 
+                      pt: 2, 
+                      borderTop: '1px solid', 
+                      borderColor: 'divider',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      flexWrap: 'wrap',
+                      gap: 1
+                    }}>
+                      <Typography variant="body2" color="text.secondary">
+                        <strong>Issuer:</strong> {selectedCert?.issuer}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        <strong>Issued:</strong> {selectedCert?.issueDate}
+                      </Typography>
+                    </Box>
+                  </DialogContent>
+                </Dialog>
+              </Box>
             </motion.div>
           </Grid>
         </Grid>
