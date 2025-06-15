@@ -56,7 +56,7 @@ Key aspects of this project include implementing secure OAuth 2.0 authentication
     longDescription: `The Farmer is a sophisticated Discord bot that brings a complete farming simulation experience to Discord servers. Built using Python and the Discord.py library, this bot features a comprehensive farming system with real-time crop growth, an in-game economy, and a skill progression system. The bot was designed with scalability in mind, utilizing asynchronous programming patterns to handle multiple user requests efficiently.
 
 This project demonstrates my ability to create engaging, interactive experiences within the Discord platform. The bot includes features such as a dynamic economy system, inventory management, and a skill tree that allows players to specialize their farming approach. The codebase is structured using object-oriented principles, making it maintainable and extensible for future updates. The bot also includes a shop system, leaderboards, and various interactive commands that encourage community engagement and competition.`,
-    technologies: ['Python', 'Discord API', 'AWS', 'Asynchronous Programming', 'MongoDB', 'Object-Oriented Design'],
+    technologies: ['Python', 'Discord API', 'AWS', 'Asynchronous Programming', 'Object-Oriented Design'],
     githubLink: 'https://github.com/NishTheFish-dev/The-Farmer',
     demoLink: '',
     images: [
