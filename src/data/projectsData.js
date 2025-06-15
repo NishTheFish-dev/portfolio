@@ -11,7 +11,10 @@ const projectsData = [
     technologies: ['Electron', 'React', 'TypeScript', 'YouTube Music API', 'Desktop App'],
     githubLink: 'https://github.com/NishTheFish-dev/custom-ytmusic-client',
     demoLink: '',
-    images: [],
+    images: [
+      { src: '/assets/ytmusic1.png', alt: 'YouTube Music Client Screenshot 1' },
+      { src: '/assets/ytmusic2.png', alt: 'YouTube Music Client Screenshot 2' }
+    ],
     features: [
       'Electron main process which creates a frameless window, handles native menus, global shortcuts, and auto-updates via electron-updater.',
       'A React + TypeScript renderer injects custom CSS/JS into the YouTube Music DOM (through a preload script) to darken the theme and expose player state.',

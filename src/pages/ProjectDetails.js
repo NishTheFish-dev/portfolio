@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, Link as RouterLink } from 'react-router-dom';
 import {
   Container,
@@ -7,9 +7,14 @@ import {
   Chip,
   Button,
   Grid,
+  Modal,
+  Fade,
+  Backdrop,
+  IconButton,
 } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import CloseIcon from '@mui/icons-material/Close';
 import { motion } from 'framer-motion';
 
 import projectsData from '../data/projectsData';
@@ -17,6 +22,15 @@ import projectsData from '../data/projectsData';
 const ProjectDetails = () => {
   const { slug } = useParams();
   const project = projectsData.find((p) => p.slug === slug);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleImageClick = (img) => {
+    setSelectedImage(img);
+  };
+
+  const handleClose = () => {
+    setSelectedImage(null);
+  };
 
   if (!project) {
     return (
@@ -64,22 +78,6 @@ const ProjectDetails = () => {
         ))}
       </Box>
 
-      {project.images && project.images.length > 0 && (
-        <Grid container spacing={2} sx={{ mb: 4 }}>
-          {project.images.map((src, idx) => (
-            <Grid item xs={12} sm={6} key={idx}>
-              {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
-              <Box
-                component="img"
-                src={src}
-                alt={`Screenshot ${idx + 1} for ${project.title}`}
-                sx={{ width: '100%', borderRadius: 2 }}
-              />
-            </Grid>
-          ))}
-        </Grid>
-      )}
-
       {project.githubLink && (
         <Button
           variant="contained"
@@ -112,6 +110,112 @@ const ProjectDetails = () => {
           </Box>
         </Box>
       )}
+      {project.images && project.images.length > 0 && (
+        <Box sx={{ mt: 6, mb: 4 }}>
+          <Typography variant="h5" component="h2" sx={{ fontWeight: 600, mb: 3 }}>
+            Project Screenshots
+          </Typography>
+          <Grid container spacing={3}>
+            {project.images.map((img, idx) => (
+              <Grid item xs={12} sm={6} key={idx}>
+                <Box
+                  component="img"
+                  src={img.src}
+                  alt={img.alt}
+                  onClick={() => handleImageClick(img)}
+                  sx={{
+                    width: '100%',
+                    borderRadius: 2,
+                    boxShadow: 2,
+                    cursor: 'pointer',
+                    '&:hover': {
+                      boxShadow: 4,
+                      transform: 'scale(1.01)',
+                      transition: 'all 0.2s ease-in-out',
+                    },
+                  }}
+                />
+                {img.caption && (
+                  <Typography variant="caption" color="text.secondary" display="block" align="center" mt={1}>
+                    {img.caption}
+                  </Typography>
+                )}
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+      )}
+
+      {/* Image Modal */}
+      <Modal
+        open={!!selectedImage}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          p: 2,
+        }}
+      >
+        <Fade in={!!selectedImage}>
+          <Box sx={{
+            position: 'relative',
+            outline: 'none',
+            maxWidth: '90vw',
+            maxHeight: '90vh',
+          }}>
+            <IconButton
+              onClick={handleClose}
+              sx={{
+                position: 'absolute',
+                right: 8,
+                top: 8,
+                color: 'white',
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                '&:hover': {
+                  backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                },
+                zIndex: 1,
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+            <Box
+              component="img"
+              src={selectedImage?.src}
+              alt={selectedImage?.alt || 'Enlarged view'}
+              sx={{
+                maxWidth: '100%',
+                maxHeight: '90vh',
+                borderRadius: 1,
+                boxShadow: 24,
+                display: 'block',
+              }}
+            />
+            {selectedImage?.caption && (
+              <Typography 
+                variant="subtitle1" 
+                color="white" 
+                align="center" 
+                sx={{
+                  mt: 1,
+                  textShadow: '0 0 8px rgba(0,0,0,0.8)',
+                  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                  p: 1,
+                  borderRadius: 1,
+                }}
+              >
+                {selectedImage.caption}
+              </Typography>
+            )}
+          </Box>
+        </Fade>
+      </Modal>
     </Container>
   );
 };
