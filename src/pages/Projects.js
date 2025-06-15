@@ -13,10 +13,13 @@ import {
   alpha,
 } from '@mui/material';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import projectsData from '../data/projectsData';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import CodeIcon from '@mui/icons-material/Code';
 
 const Projects = () => {
+  const navigate = useNavigate();
   const theme = useTheme();
 
   const fadeInUp = {
@@ -39,8 +42,8 @@ const Projects = () => {
     },
   };
 
-  const projects = [
-    {
+  const projects = projectsData;
+    /*{
       title: 'Custom Spotify Client',
       description: 'A responsive web application that interfaces with the Spotify Web API to provide a custom music streaming experience. Features include playlist management, track search, and playback controls with a modern UI built using React and TypeScript.',
       technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Spotify API', 'OAuth'],
@@ -82,7 +85,7 @@ const Projects = () => {
       githubLink: '#',
       featured: false
     },
-  ];
+  ];*/
 
   return (
     <Container maxWidth="lg" sx={{ py: { xs: 4, md: 8 } }}>
@@ -133,7 +136,9 @@ const Projects = () => {
               >
                 <Card 
                   elevation={0}
+                  onClick={() => navigate(`/projects/${project.slug}`)}
                   sx={{
+                    cursor: 'pointer',
                     height: '100%',
                     display: 'flex',
                     flexDirection: 'column',
@@ -183,6 +188,7 @@ const Projects = () => {
                             label={tech}
                             size="small"
                             variant="outlined"
+                            onClick={(e) => e.stopPropagation()}
                             sx={{
                               borderRadius: 1,
                               fontSize: '0.7rem',
@@ -199,6 +205,7 @@ const Projects = () => {
                   <CardActions sx={{ p: 2, pt: 0 }}>
                     <Button
                       startIcon={<GitHubIcon />}
+                      onClick={(e) => e.stopPropagation()}
                       href={project.githubLink}
                       target="_blank"
                       rel="noopener noreferrer"
