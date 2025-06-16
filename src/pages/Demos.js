@@ -5,7 +5,7 @@ import { Routes, Route, Link } from 'react-router-dom';
 import SpyChartDemo from '../demos/SpyChartDemo';
 
 const demoItems = [
-  { label: 'SPY Candlestick Chart', path: 'spy-chart', element: <SpyChartDemo /> },
+  { label: '$SPY Candlestick Chart', path: 'spy-chart', element: <SpyChartDemo /> },
 ];
 
 
