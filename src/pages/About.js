@@ -422,7 +422,25 @@ const About = () => {
                   </Typography>
                 </Box>
                 <Box sx={{ width: '100%' }}>
-                  {certificationsData.map((cert) => (
+                  {/* Sort certifications by date (newest first) */}
+                  {[...certificationsData]
+                    .sort((a, b) => {
+                      // Convert issue dates to Date objects for comparison
+                      const dateA = new Date(
+                        a.issueDate.split(' ')[1], // Year
+                        ['January', 'February', 'March', 'April', 'May', 'June', 
+                         'July', 'August', 'September', 'October', 'November', 'December']
+                        .indexOf(a.issueDate.split(' ')[0]) // Month
+                      );
+                      const dateB = new Date(
+                        b.issueDate.split(' ')[1], // Year
+                        ['January', 'February', 'March', 'April', 'May', 'June',
+                         'July', 'August', 'September', 'October', 'November', 'December']
+                        .indexOf(b.issueDate.split(' ')[0]) // Month
+                      );
+                      return dateB - dateA; // Sort newest first
+                    })
+                    .map((cert) => (
                     <motion.div
                       key={cert.id}
                       whileHover={{ x: 5 }}
