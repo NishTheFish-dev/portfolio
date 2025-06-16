@@ -33,71 +33,114 @@ const TIMEFRAMES = [
   { label: '1 Day', interval: '1d', minutes: 1440 },
 ];
 
-// Fallback data in case API fails
-const FALLBACK_DATA = [
-  { date: '2023-06-12', open: 430.5, high: 433.2, low: 430.1, close: 432.8 },
-  { date: '2023-06-13', open: 433.0, high: 437.5, low: 432.8, close: 436.2 },
-  { date: '2023-06-14', open: 436.5, high: 439.8, low: 435.0, close: 438.5 },
-  { date: '2023-06-15', open: 437.2, high: 440.1, low: 436.8, close: 439.3 },
-  { date: '2023-06-16', open: 439.0, high: 441.2, low: 437.5, close: 440.0 },
+// Use a list of proxy servers to rotate through if one fails
+const PROXY_SERVERS = [
+  'https://api.allorigins.win/raw?url=',
+  'https://cors-anywhere.herokuapp.com/',
+  'https://corsproxy.io/?' + encodeURIComponent('')
 ];
+
+async function fetchWithRetry(url, retries = 3) {
+  let lastError;
+  
+  for (let i = 0; i < retries; i++) {
+    const proxyIndex = i % PROXY_SERVERS.length;
+    const proxyUrl = PROXY_SERVERS[proxyIndex] + (proxyIndex === 2 ? url : encodeURIComponent(url));
+    
+    try {
+      console.log(`Attempt ${i + 1}: Fetching from proxy ${proxyIndex + 1}`);
+      const response = await fetch(proxyUrl, {
+        headers: {
+          ...(proxyIndex === 1 && { 'X-Requested-With': 'XMLHttpRequest' }),
+        },
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.warn(`Attempt ${i + 1} failed:`, error.message);
+      lastError = error;
+      // Wait before retrying
+      await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
+    }
+  }
+  
+  throw lastError || new Error('All fetch attempts failed');
+}
 
 async function fetchSpyData(interval, minutesPerCandle) {
   try {
-    // Try direct CORS request first
-    const totalMinutes = minutesPerCandle * 60;
-    const days = Math.ceil(totalMinutes / 1440) + 1;
+    // For 1-minute data, limit to 1 day to avoid too much data
+    const isOneMinute = interval === '1m';
+    const days = isOneMinute ? 1 : Math.ceil((minutesPerCandle * 60) / 1440) + 1;
     const range = `${days}d`;
+    
+    console.log(`Requesting ${interval} data with range: ${range}`);
+    
+    // Construct the Yahoo Finance API URL
     const url = `https://query1.finance.yahoo.com/v8/finance/chart/SPY?range=${range}&interval=${interval}`;
+    console.log('Fetching from URL:', url);
     
-    // Try direct fetch first
-    let res = await fetch(url);
+    // Use proxy with retry logic
+    const json = await fetchWithRetry(url);
     
-    // If direct fetch fails, try with proxy
-    if (!res.ok) {
-      const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
-      res = await fetch(proxyUrl);
-      
-      // If proxy also fails, use fallback data
-      if (!res.ok) {
-        console.warn('Using fallback data due to API failure');
-        return FALLBACK_DATA;
-      }
+    if (!json || !json.chart) {
+      throw new Error('Invalid API response format');
     }
     
-    const json = await res.json();
-    const result = json.chart?.result?.[0];
-    
-    if (!result || !result.indicators?.quote?.[0]) {
-      console.warn('Invalid API response, using fallback data');
-      return FALLBACK_DATA;
+    const result = json.chart.result?.[0];
+    if (!result) {
+      throw new Error('No result in API response');
     }
     
     const { timestamp, indicators } = result;
-    const { open, high, low, close } = indicators.quote[0];
-    
-    // Ensure we have valid data
-    if (!timestamp || !open || !high || !low || !close) {
-      console.warn('Missing data in API response, using fallback');
-      return FALLBACK_DATA;
+    if (!timestamp || !indicators?.quote?.[0]) {
+      throw new Error('Missing required data in API response');
     }
     
-    const raw = timestamp.map((t, i) => ({
-      date: new Date(t * 1000).toISOString().split('T')[0],
-      open: open[i],
-      high: high[i],
-      low: low[i],
-      close: close[i],
-    }));
+    const { open, high, low, close } = indicators.quote[0];
     
-    const validData = raw.filter((d) => d.open && d.high && d.low && d.close);
+    // Process the data
+    const raw = [];
+    for (let i = 0; i < timestamp.length; i++) {
+      if (open[i] != null && close[i] != null) {
+        raw.push({
+          date: new Date(timestamp[i] * 1000).toLocaleString(),
+          open: open[i],
+          high: high[i],
+          low: low[i],
+          close: close[i],
+        });
+      }
+      // Limit to 120 data points for 1-minute intervals
+      if (isOneMinute && raw.length >= 120) break;
+    }
     
-    // If we don't have enough valid data points, use fallback
-    return validData.length > 2 ? validData : FALLBACK_DATA;
+    console.log(`Filtered data points: ${raw.length}`);
     
+    // Ensure we have at least some data
+    if (raw.length === 0) {
+      throw new Error('No valid data points found');
+    }
+    
+    // For 1-minute data, take the most recent 120 points (2 hours)
+    // For other intervals, take up to 60 points
+    const maxPoints = isOneMinute ? 120 : 60;
+    const dataPoints = raw.slice(-maxPoints);
+    console.log(`Returning ${dataPoints.length} data points`);
+    
+    return dataPoints;
   } catch (error) {
-    console.error('Error fetching SPY data:', error);
-    return FALLBACK_DATA;
+    console.error('Error in fetchSpyData:', error);
+    // Provide a more user-friendly error message
+    const friendlyError = new Error(
+      `Failed to load ${interval} chart data. ${error.message}`
+    );
+    friendlyError.originalError = error;
+    throw friendlyError;
   }
 }
 
@@ -106,9 +149,8 @@ const SpyChartDemo = () => {
   const theme = useTheme();
   const [timeframe, setTimeframe] = useState(TIMEFRAMES[0]);
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [usingFallback, setUsingFallback] = useState(false);
 
   // Color definitions for dark theme
   const upColor = theme.palette.success.main;
@@ -120,14 +162,16 @@ const SpyChartDemo = () => {
     try {
       setLoading(true);
       setError('');
-      const data = await fetchSpyData(tf.interval, tf.minutes);
-      setData(data);
-      setUsingFallback(data === FALLBACK_DATA);
-    } catch (err) {
-      console.error('Error loading data:', err);
-      setError('Failed to load chart data. Using sample data instead.');
-      setData(FALLBACK_DATA);
-      setUsingFallback(true);
+      console.log(`Fetching data for interval: ${tf.interval}`);
+      const d = await fetchSpyData(tf.interval, tf.minutes);
+      console.log(`Data received for ${tf.interval}:`, d);
+      if (!d || !d.length) {
+        throw new Error(`No data returned for ${tf.interval} interval`);
+      }
+      setData(d);
+    } catch (e) {
+      console.error(`Error loading ${tf.interval} data:`, e);
+      setError(`Failed to load ${tf.label} chart data. ${e.message}`);
     } finally {
       setLoading(false);
     }
@@ -242,20 +286,12 @@ const SpyChartDemo = () => {
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
           <CircularProgress />
         </Box>
+      ) : error ? (
+        <Typography color="error" align="center">{error}</Typography>
       ) : (
-        <Box>
-          {error && (
-            <Typography color="warning" align="center" sx={{ mb: 2 }}>
-              {error}
-            </Typography>
-          )}
-          {usingFallback && (
-            <Typography color="warning" align="center" sx={{ mb: 2 }}>
-              Showing sample data. Real-time data unavailable.
-            </Typography>
-          )}
-          <ResponsiveContainer width="100%" height={420}>
-            <ComposedChart data={data} margin={{ top: 20, right: 40, left: 0, bottom: 0 }}>
+        <> 
+        <ResponsiveContainer width="100%" height={420}>
+          <ComposedChart data={data} margin={{ top: 20, right: 40, left: 0, bottom: 0 }}>
             <CartesianGrid stroke={gridColor} strokeDasharray="3 3" opacity={0.6} />
             <XAxis dataKey="date" tick={{ fontSize: 11, fill: axisColor }} axisLine={{ stroke: axisColor }} tickLine={{ stroke: axisColor }} />
             <YAxis domain={yDomain} ticks={ticks} tickFormatter={(v) => `$${v.toFixed(2)}`} tick={{ fontSize: 11, fill: axisColor }} axisLine={{ stroke: axisColor }} tickLine={{ stroke: axisColor }} />
@@ -270,12 +306,12 @@ const SpyChartDemo = () => {
               itemStyle={{ color: '#ffffff' }}
             />
             <Bar dataKey="close" isAnimationActive={false} shape={candleShape} />
-            </ComposedChart>
-          </ResponsiveContainer>
-          <Typography variant="caption" display="block" align="center" sx={{ mt: 1 }}>
-            Data sourced from Yahoo Finance{!usingFallback ? ' (via api.allorigins.win proxy)' : ''}
-          </Typography>
-        </Box>
+          </ComposedChart>
+        </ResponsiveContainer>
+        <Typography variant="caption" display="block" align="center" sx={{ mt: 1 }}>
+          Data sourced from Yahoo Finance (via api.allorigins.win proxy)
+        </Typography>
+        </>
       )}
     </Container>
   );
