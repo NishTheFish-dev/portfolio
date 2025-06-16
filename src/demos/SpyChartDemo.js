@@ -22,7 +22,105 @@ import {
   Bar,
 } from 'recharts';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import { useNavigate } from 'react-router-dom';
+
+// Cache configuration
+const CACHE_CONFIG = {
+  PREFIX: 'spy-chart-cache-',
+  TTL: 5 * 60 * 1000, // 5 minutes in milliseconds
+};
+
+// In-memory cache
+const memoryCache = new Map();
+
+// Cache utility functions
+const cacheUtils = {
+  // Generate a cache key based on timeframe
+  getCacheKey: (tf) => `${CACHE_CONFIG.PREFIX}${tf.interval}-${tf.minutes}`,
+  
+  // Get data from cache (checks both memory and localStorage)
+  get: (key) => {
+    // Check memory cache first
+    if (memoryCache.has(key)) {
+      const { data, timestamp } = memoryCache.get(key);
+      if (Date.now() - timestamp < CACHE_CONFIG.TTL) {
+        return { data, fromCache: 'memory' };
+      }
+      memoryCache.delete(key); // Remove expired entry
+    }
+    
+    // Check localStorage
+    try {
+      const cached = localStorage.getItem(key);
+      if (cached) {
+        const { data, timestamp } = JSON.parse(cached);
+        if (Date.now() - timestamp < CACHE_CONFIG.TTL) {
+          // Update memory cache
+          memoryCache.set(key, { data, timestamp });
+          return { data, fromCache: 'localStorage' };
+        }
+        localStorage.removeItem(key); // Clean up expired entry
+      }
+    } catch (e) {
+      console.warn('Error reading from cache:', e);
+    }
+    
+    return { data: null, fromCache: null };
+  },
+  
+  // Save data to both caches
+  set: (key, data) => {
+    const timestamp = Date.now();
+    const entry = { data, timestamp };
+    
+    // Update memory cache
+    memoryCache.set(key, entry);
+    
+    // Update localStorage (async)
+    try {
+      localStorage.setItem(key, JSON.stringify(entry));
+    } catch (e) {
+      console.warn('Error writing to localStorage:', e);
+      // If localStorage is full, clear old entries
+      if (e.name === 'QuotaExceededError') {
+        cacheUtils.cleanup();
+        try {
+          localStorage.setItem(key, JSON.stringify(entry));
+        } catch (e2) {
+          console.warn('Failed to write to localStorage after cleanup:', e2);
+        }
+      }
+    }
+  },
+  
+  // Clear expired entries from localStorage
+  cleanup: () => {
+    const now = Date.now();
+    const keysToRemove = [];
+    
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key.startsWith(CACHE_CONFIG.PREFIX)) {
+        try {
+          const { timestamp } = JSON.parse(localStorage.getItem(key));
+          if (now - timestamp >= CACHE_CONFIG.TTL) {
+            keysToRemove.push(key);
+          }
+        } catch (e) {
+          keysToRemove.push(key); // Remove invalid entries
+        }
+      }
+    }
+    
+    keysToRemove.forEach(key => localStorage.removeItem(key));
+  },
+};
+
+// Run cleanup on initial load
+if (typeof window !== 'undefined') {
+  cacheUtils.cleanup();
+}
 
 const TIMEFRAMES = [
   { label: '1 Minute', interval: '1m', minutes: 1 },
@@ -158,28 +256,64 @@ const SpyChartDemo = () => {
   const gridColor = '#4f4f4f';
   const axisColor = '#ccc';
 
-  const loadData = async (tf) => {
+  const loadData = useCallback(async (tf, forceRefresh = false) => {
+    const cacheKey = cacheUtils.getCacheKey(tf);
+    
+    // Try to get data from cache first (unless forcing refresh)
+    if (!forceRefresh) {
+      const { data: cachedData, fromCache } = cacheUtils.get(cacheKey);
+      if (cachedData) {
+        console.log(`Using cached data for ${tf.interval} (from ${fromCache})`);
+        setData(cachedData);
+        setLoading(false);
+        
+        // Still fetch fresh data in the background
+        if (fromCache === 'localStorage') {
+          loadData(tf, true).catch(e => 
+            console.warn('Background refresh failed:', e)
+          );
+        }
+        return;
+      }
+    }
+    
+    // If no cache or force refresh, fetch new data
     try {
       setLoading(true);
       setError('');
-      console.log(`Fetching data for interval: ${tf.interval}`);
-      const d = await fetchSpyData(tf.interval, tf.minutes);
-      console.log(`Data received for ${tf.interval}:`, d);
-      if (!d || !d.length) {
+      console.log(`Fetching fresh data for interval: ${tf.interval}`);
+      
+      const freshData = await fetchSpyData(tf.interval, tf.minutes);
+      console.log(`Data received for ${tf.interval}:`, freshData);
+      
+      if (!freshData || !freshData.length) {
         throw new Error(`No data returned for ${tf.interval} interval`);
       }
-      setData(d);
+      
+      // Update state and cache
+      setData(freshData);
+      cacheUtils.set(cacheKey, freshData);
+      
     } catch (e) {
       console.error(`Error loading ${tf.interval} data:`, e);
-      setError(`Failed to load ${tf.label} chart data. ${e.message}`);
+      
+      // If we have cached data, show it with a warning
+      const { data: cachedData } = cacheUtils.get(cacheKey);
+      if (cachedData && !forceRefresh) {
+        console.warn('Using stale data due to fetch error');
+        setData(cachedData);
+        setError(`Using cached data (${new Date().toLocaleTimeString()}) - ${e.message}`);
+      } else {
+        setError(`Failed to load ${tf.label} chart data. ${e.message}`);
+      }
     } finally {
       setLoading(false);
     }
-  };
+  }, [timeframe]);
 
   useEffect(() => {
     loadData(timeframe);
-  }, [timeframe]);
+  }, [timeframe, loadData]);
 
   // Derived bounds with dynamic padding for wicks
   const high = useMemo(() => {
@@ -193,7 +327,6 @@ const SpyChartDemo = () => {
     const minLow = Math.min(...data.map(d => d.low));
     return timeframe.interval === '1d' ? Math.max(0, Math.floor(minLow - 5)) : Math.max(0, Math.floor(minLow - 2));
   }, [data, timeframe.interval]);
-
 
   // Generate price ticks based on selected timeframe
   const ticks = useMemo(() => {
@@ -248,9 +381,12 @@ const SpyChartDemo = () => {
     );
   }, [high, low, upColor, downColor]);
 
-  const handleChange = (e) => {
-    const tf = TIMEFRAMES.find((t) => t.interval === e.target.value);
-    if (tf) setTimeframe(tf);
+  const handleTimeframeChange = (event) => {
+    const selectedTf = TIMEFRAMES.find(tf => tf.interval === event.target.value);
+    if (selectedTf) {
+      setTimeframe(selectedTf);
+      loadData(selectedTf, false);
+    }
   };
 
   return (
@@ -272,7 +408,7 @@ const SpyChartDemo = () => {
       <Box sx={{ mb: 3, display: 'flex', justifyContent: 'center' }}>
         <FormControl size="small" sx={{ minWidth: 160 }}>
           <InputLabel id="tf-label">Timeframe</InputLabel>
-          <Select labelId="tf-label" value={timeframe.interval} label="Timeframe" onChange={handleChange}>
+          <Select labelId="tf-label" value={timeframe.interval} label="Timeframe" onChange={handleTimeframeChange}>
             {TIMEFRAMES.map((t) => (
               <MenuItem key={t.interval} value={t.interval}>
                 {t.label}
@@ -308,6 +444,7 @@ const SpyChartDemo = () => {
             <Bar dataKey="close" isAnimationActive={false} shape={candleShape} />
           </ComposedChart>
         </ResponsiveContainer>
+
         <Typography variant="caption" display="block" align="center" sx={{ mt: 1 }}>
           Data sourced from Yahoo Finance (via api.allorigins.win proxy)
         </Typography>
