@@ -33,28 +33,72 @@ const TIMEFRAMES = [
   { label: '1 Day', interval: '1d', minutes: 1440 },
 ];
 
+// Fallback data in case API fails
+const FALLBACK_DATA = [
+  { date: '2023-06-12', open: 430.5, high: 433.2, low: 430.1, close: 432.8 },
+  { date: '2023-06-13', open: 433.0, high: 437.5, low: 432.8, close: 436.2 },
+  { date: '2023-06-14', open: 436.5, high: 439.8, low: 435.0, close: 438.5 },
+  { date: '2023-06-15', open: 437.2, high: 440.1, low: 436.8, close: 439.3 },
+  { date: '2023-06-16', open: 439.0, high: 441.2, low: 437.5, close: 440.0 },
+];
+
 async function fetchSpyData(interval, minutesPerCandle) {
-  // compute minimum range in days that covers 60 candles
-  const totalMinutes = minutesPerCandle * 60;
-  const days = Math.ceil(totalMinutes / 1440) + 1; // +1 buffer day
-  const range = `${days}d`;
-  const url = `https://query1.finance.yahoo.com/v8/finance/chart/SPY?range=${range}&interval=${interval}`;
-  const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
-  const res = await fetch(proxyUrl);
-  if (!res.ok) throw new Error('Network response was not ok');
-  const json = await res.json();
-  const result = json.chart?.result?.[0];
-  if (!result) throw new Error('Invalid API response');
-  const { timestamp, indicators } = result;
-  const { open, high, low, close } = indicators.quote[0];
-  const raw = timestamp.map((t, i) => ({
-    date: new Date(t * 1000).toLocaleString(),
-    open: open[i],
-    high: high[i],
-    low: low[i],
-    close: close[i],
-  })).filter((d) => d.open != null && d.close != null);
-  return raw.slice(-60); // exactly 60 candles
+  try {
+    // Try direct CORS request first
+    const totalMinutes = minutesPerCandle * 60;
+    const days = Math.ceil(totalMinutes / 1440) + 1;
+    const range = `${days}d`;
+    const url = `https://query1.finance.yahoo.com/v8/finance/chart/SPY?range=${range}&interval=${interval}`;
+    
+    // Try direct fetch first
+    let res = await fetch(url);
+    
+    // If direct fetch fails, try with proxy
+    if (!res.ok) {
+      const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+      res = await fetch(proxyUrl);
+      
+      // If proxy also fails, use fallback data
+      if (!res.ok) {
+        console.warn('Using fallback data due to API failure');
+        return FALLBACK_DATA;
+      }
+    }
+    
+    const json = await res.json();
+    const result = json.chart?.result?.[0];
+    
+    if (!result || !result.indicators?.quote?.[0]) {
+      console.warn('Invalid API response, using fallback data');
+      return FALLBACK_DATA;
+    }
+    
+    const { timestamp, indicators } = result;
+    const { open, high, low, close } = indicators.quote[0];
+    
+    // Ensure we have valid data
+    if (!timestamp || !open || !high || !low || !close) {
+      console.warn('Missing data in API response, using fallback');
+      return FALLBACK_DATA;
+    }
+    
+    const raw = timestamp.map((t, i) => ({
+      date: new Date(t * 1000).toISOString().split('T')[0],
+      open: open[i],
+      high: high[i],
+      low: low[i],
+      close: close[i],
+    }));
+    
+    const validData = raw.filter((d) => d.open && d.high && d.low && d.close);
+    
+    // If we don't have enough valid data points, use fallback
+    return validData.length > 2 ? validData : FALLBACK_DATA;
+    
+  } catch (error) {
+    console.error('Error fetching SPY data:', error);
+    return FALLBACK_DATA;
+  }
 }
 
 const SpyChartDemo = () => {
@@ -62,8 +106,9 @@ const SpyChartDemo = () => {
   const theme = useTheme();
   const [timeframe, setTimeframe] = useState(TIMEFRAMES[0]);
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [usingFallback, setUsingFallback] = useState(false);
 
   // Color definitions for dark theme
   const upColor = theme.palette.success.main;
@@ -75,10 +120,14 @@ const SpyChartDemo = () => {
     try {
       setLoading(true);
       setError('');
-      const d = await fetchSpyData(tf.interval, tf.minutes);
-      setData(d);
-    } catch (e) {
-      setError(e.message);
+      const data = await fetchSpyData(tf.interval, tf.minutes);
+      setData(data);
+      setUsingFallback(data === FALLBACK_DATA);
+    } catch (err) {
+      console.error('Error loading data:', err);
+      setError('Failed to load chart data. Using sample data instead.');
+      setData(FALLBACK_DATA);
+      setUsingFallback(true);
     } finally {
       setLoading(false);
     }
@@ -173,7 +222,7 @@ const SpyChartDemo = () => {
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
         }}>
-        SPY Candlestick Chart
+        $SPY Candlestick Chart
       </Typography>
 
       <Box sx={{ mb: 3, display: 'flex', justifyContent: 'center' }}>
@@ -193,12 +242,20 @@ const SpyChartDemo = () => {
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
           <CircularProgress />
         </Box>
-      ) : error ? (
-        <Typography color="error" align="center">{error}</Typography>
       ) : (
-        <> 
-        <ResponsiveContainer width="100%" height={420}>
-          <ComposedChart data={data} margin={{ top: 20, right: 40, left: 0, bottom: 0 }}>
+        <Box>
+          {error && (
+            <Typography color="warning" align="center" sx={{ mb: 2 }}>
+              {error}
+            </Typography>
+          )}
+          {usingFallback && (
+            <Typography color="warning" align="center" sx={{ mb: 2 }}>
+              Showing sample data. Real-time data unavailable.
+            </Typography>
+          )}
+          <ResponsiveContainer width="100%" height={420}>
+            <ComposedChart data={data} margin={{ top: 20, right: 40, left: 0, bottom: 0 }}>
             <CartesianGrid stroke={gridColor} strokeDasharray="3 3" opacity={0.6} />
             <XAxis dataKey="date" tick={{ fontSize: 11, fill: axisColor }} axisLine={{ stroke: axisColor }} tickLine={{ stroke: axisColor }} />
             <YAxis domain={yDomain} ticks={ticks} tickFormatter={(v) => `$${v.toFixed(2)}`} tick={{ fontSize: 11, fill: axisColor }} axisLine={{ stroke: axisColor }} tickLine={{ stroke: axisColor }} />
@@ -213,12 +270,12 @@ const SpyChartDemo = () => {
               itemStyle={{ color: '#ffffff' }}
             />
             <Bar dataKey="close" isAnimationActive={false} shape={candleShape} />
-          </ComposedChart>
-        </ResponsiveContainer>
-        <Typography variant="caption" display="block" align="center" sx={{ mt: 1 }}>
-          Data sourced from Yahoo Finance (via api.allorigins.win proxy)
-        </Typography>
-        </>
+            </ComposedChart>
+          </ResponsiveContainer>
+          <Typography variant="caption" display="block" align="center" sx={{ mt: 1 }}>
+            Data sourced from Yahoo Finance{!usingFallback ? ' (via api.allorigins.win proxy)' : ''}
+          </Typography>
+        </Box>
       )}
     </Container>
   );
