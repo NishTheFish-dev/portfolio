@@ -17,9 +17,13 @@ import {
   Container,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import ColorModeContext from '../contexts/ColorModeContext';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
+  const colorMode = React.useContext(ColorModeContext);
   const [mobileOpen, setMobileOpen] = useState(false);
   const theme = useTheme();
   const location = useLocation();
@@ -28,6 +32,7 @@ const Navbar = () => {
   const menuItems = [
     { text: 'Home', path: '/' },
     { text: 'Projects', path: '/projects' },
+    { text: 'Demos', path: '/demos' },
     { text: 'About', path: '/about' },
     { text: 'Contact', path: '/contact' },
   ];
@@ -179,7 +184,7 @@ const Navbar = () => {
               Nishanth Pallapu
             </Typography>
             {!isMobile && (
-              <Box sx={{ display: 'flex', ml: 'auto' }}>
+              <Box sx={{ display: 'flex', ml: 'auto', alignItems: 'center' }}>
                 <AnimatePresence>
                   {menuItems.map((item) => (
                     <motion.div
@@ -220,11 +225,19 @@ const Navbar = () => {
                     </motion.div>
                   ))}
                 </AnimatePresence>
+                <IconButton onClick={colorMode.toggleColorMode} sx={{ ml: 1 }} color="inherit">
+                  {theme.palette.mode === 'dark' ? <LightModeIcon fontSize="small" /> : <DarkModeIcon fontSize="small" />}
+                </IconButton>
               </Box>
             )}
           </Toolbar>
         </Container>
       </AppBar>
+      {isMobile && (
+        <IconButton onClick={colorMode.toggleColorMode} sx={{ ml: 'auto', mr: 1 }} color="inherit">
+          {theme.palette.mode === 'dark' ? <LightModeIcon fontSize="small" /> : <DarkModeIcon fontSize="small" />}
+        </IconButton>
+      )}
       <Drawer
         variant="temporary"
         anchor="left"

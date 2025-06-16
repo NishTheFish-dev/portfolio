@@ -15,9 +15,9 @@ import {
   DialogTitle,
   IconButton,
   useMediaQuery,
-  Skeleton
+
 } from '@mui/material';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import SchoolIcon from '@mui/icons-material/School';
 import WorkIcon from '@mui/icons-material/Work';
 import CodeIcon from '@mui/icons-material/Code';
@@ -48,6 +48,7 @@ const About = () => {
     'Algorithms',
     'Agile Development'
   ];
+
 
   const experiences = [
     {
@@ -221,7 +222,7 @@ const About = () => {
 
   const [selectedCert, setSelectedCert] = useState(null);
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const [loading, setLoading] = useState(true);
+
 
   const handleCertClick = (cert) => {
     setSelectedCert(cert);
@@ -230,12 +231,6 @@ const About = () => {
   const handleClose = () => {
     setSelectedCert(null);
   };
-
-  // Simulate loading
-  React.useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1000);
-    return () => clearTimeout(timer);
-  }, []);
 
   return (
     <Container maxWidth="lg" sx={{ py: { xs: 4, md: 8 } }}>
@@ -377,25 +372,28 @@ const About = () => {
                   height: '100%',
                 }}
               >
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                  {skills.map((skill, index) => (
-                    <Chip 
-                      key={index} 
-                      label={skill} 
-                      color="primary" 
-                      variant="outlined"
-                      sx={{ 
-                        mb: 1,
-                        cursor: 'default',
-                        '&:hover': {
-                          bgcolor: 'primary.main',
-                          color: 'white',
-                        },
-                        transition: 'all 0.2s',
-                      }}
-                    />
-                  ))}
+                <Box>
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                    {skills.map((skill, index) => (
+                      <Chip
+                        key={index}
+                        label={skill}
+                        color="primary"
+                        variant="outlined"
+                        sx={{
+                          mb: 1,
+                          cursor: 'default',
+                          '&:hover': {
+                            bgcolor: 'primary.main',
+                            color: 'white',
+                          },
+                          transition: 'all 0.2s',
+                        }}
+                      />
+                    ))}
+                  </Box>
                 </Box>
+    
               </Paper>
 
               {/* Certifications Section */}
