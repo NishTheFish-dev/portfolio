@@ -19,6 +19,9 @@ import ContactMailIcon from '@mui/icons-material/ContactMail';
 
 const Contact = () => {
   const theme = useTheme();
+  const darkBackground = alpha(theme.palette.background.paper, 0.5);
+  const borderColor = alpha(theme.palette.divider, 0.5);
+  const hoverBackground = alpha(theme.palette.primary.main, 0.1);
   
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
@@ -110,14 +113,8 @@ const Contact = () => {
                 sx={{
                   p: { xs: 4, md: 6 },
                   borderRadius: 3,
-                  background: theme.palette.mode === 'dark' 
-                    ? alpha(theme.palette.background.paper, 0.8)
-                    : alpha(theme.palette.background.paper, 0.9),
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid',
-                  borderColor: theme.palette.mode === 'dark' 
-                    ? 'rgba(255, 255, 255, 0.1)' 
-                    : 'rgba(0, 0, 0, 0.1)',
+                  background: darkBackground,
+                  borderColor: borderColor,
                 }}
               >
                 <Box textAlign="center" mb={6}>
@@ -147,20 +144,14 @@ const Contact = () => {
                             borderRadius: 3,
                             textDecoration: 'none',
                             color: 'text.primary',
-                            bgcolor: theme.palette.mode === 'dark' 
-                              ? alpha(theme.palette.background.paper, 0.5)
-                              : alpha(theme.palette.background.paper, 0.7),
+                            bgcolor: darkBackground,
                             border: '1px solid',
-                            borderColor: theme.palette.mode === 'dark' 
-                              ? 'rgba(255, 255, 255, 0.1)' 
-                              : 'rgba(0, 0, 0, 0.05)',
+                            borderColor: borderColor,
                             transition: 'all 0.3s ease-in-out',
                             '&:hover': {
                               transform: 'translateY(-5px)',
                               boxShadow: theme.shadows[4],
-                              bgcolor: theme.palette.mode === 'dark' 
-                                ? alpha(theme.palette.primary.main, 0.1)
-                                : alpha(theme.palette.primary.light, 0.1),
+                              bgcolor: hoverBackground,
                             },
                           }}
                         >
@@ -172,9 +163,7 @@ const Contact = () => {
                               width: 70,
                               height: 70,
                               borderRadius: '50%',
-                              bgcolor: theme.palette.mode === 'dark' 
-                                ? alpha(theme.palette.primary.main, 0.1) 
-                                : alpha(theme.palette.primary.light, 0.2),
+                              bgcolor: hoverBackground,
                               color: 'primary.main',
                               mb: 2,
                               '& .MuiSvgIcon-root': {
@@ -229,17 +218,12 @@ const Contact = () => {
                             borderRadius: 2,
                             textTransform: 'none',
                             fontWeight: 500,
-                            bgcolor: theme.palette.mode === 'dark' 
-                              ? alpha(theme.palette.background.paper, 0.5)
-                              : alpha(theme.palette.background.paper, 0.8),
+                            bgcolor: darkBackground,
                             border: '1px solid',
-                            borderColor: theme.palette.mode === 'dark' 
-                              ? 'rgba(255, 255, 255, 0.1)' 
-                              : 'rgba(0, 0, 0, 0.1)',
+                            borderColor: borderColor,
                             '&:hover': {
-                              bgcolor: theme.palette.mode === 'dark' 
-                                ? alpha(theme.palette.primary.main, 0.1)
-                                : alpha(theme.palette.primary.light, 0.2),
+                              bgcolor: hoverBackground,
+                              borderColor: alpha(theme.palette.primary.main, 0.3),
                             },
                           }}
                         >

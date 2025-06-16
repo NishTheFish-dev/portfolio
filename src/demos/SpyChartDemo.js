@@ -65,12 +65,11 @@ const SpyChartDemo = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // Color adjustments based on theme mode
-  const isLight = theme.palette.mode === 'light';
-  const upColor = isLight ? '#2e7d32' : theme.palette.success.main; // darker green for light mode
-  const downColor = isLight ? '#c62828' : theme.palette.error.main; // darker red for light mode
-  const gridColor = isLight ? '#b0b0b0' : '#4f4f4f';
-  const axisColor = isLight ? '#333' : '#ccc';
+  // Color definitions for dark theme
+  const upColor = theme.palette.success.main;
+  const downColor = theme.palette.error.main;
+  const gridColor = '#4f4f4f';
+  const axisColor = '#ccc';
 
   const loadData = async (tf) => {
     try {
@@ -174,7 +173,7 @@ const SpyChartDemo = () => {
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
         }}>
-        $SPY Candlestick Chart
+        SPY Candlestick Chart
       </Typography>
 
       <Box sx={{ mb: 3, display: 'flex', justifyContent: 'center' }}>
@@ -203,7 +202,16 @@ const SpyChartDemo = () => {
             <CartesianGrid stroke={gridColor} strokeDasharray="3 3" opacity={0.6} />
             <XAxis dataKey="date" tick={{ fontSize: 11, fill: axisColor }} axisLine={{ stroke: axisColor }} tickLine={{ stroke: axisColor }} />
             <YAxis domain={yDomain} ticks={ticks} tickFormatter={(v) => `$${v.toFixed(2)}`} tick={{ fontSize: 11, fill: axisColor }} axisLine={{ stroke: axisColor }} tickLine={{ stroke: axisColor }} />
-            <Tooltip formatter={(v) => `$${parseFloat(v).toFixed(2)}`} labelStyle={{ fontWeight: 600 }} contentStyle={{ backgroundColor: isLight ? '#ffffff' : '#1e1e1e', borderColor: axisColor }} />
+            <Tooltip 
+              formatter={(v) => `$${parseFloat(v).toFixed(2)}`} 
+              labelStyle={{ fontWeight: 600, color: '#ffffff' }} 
+              contentStyle={{ 
+                backgroundColor: '#1e1e1e', 
+                borderColor: axisColor,
+                color: '#ffffff'
+              }} 
+              itemStyle={{ color: '#ffffff' }}
+            />
             <Bar dataKey="close" isAnimationActive={false} shape={candleShape} />
           </ComposedChart>
         </ResponsiveContainer>

@@ -21,6 +21,9 @@ import CodeIcon from '@mui/icons-material/Code';
 const Projects = () => {
   const navigate = useNavigate();
   const theme = useTheme();
+  const cardBackground = alpha(theme.palette.background.paper, 0.8);
+  const hoverBackground = alpha(theme.palette.primary.main, 0.1);
+  const borderColor = alpha(theme.palette.divider, 0.3);
 
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
@@ -145,14 +148,9 @@ const Projects = () => {
                     p: 0,
                     borderRadius: 3,
                     overflow: 'hidden',
-                    background: theme.palette.mode === 'dark' 
-                      ? alpha(theme.palette.background.paper, 0.8)
-                      : alpha(theme.palette.background.paper, 0.9),
-                    backdropFilter: 'blur(10px)',
+                    background: cardBackground,
                     border: '1px solid',
-                    borderColor: theme.palette.mode === 'dark' 
-                      ? 'rgba(255, 255, 255, 0.1)' 
-                      : 'rgba(0, 0, 0, 0.1)',
+                    borderColor: borderColor,
                     transition: 'all 0.3s ease-in-out',
                     '&:hover': {
                       transform: 'translateY(-4px)',

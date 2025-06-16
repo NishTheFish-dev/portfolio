@@ -17,6 +17,9 @@ import BuildIcon from '@mui/icons-material/Build';
 
 const Home = () => {
   const theme = useTheme();
+  const cardBackground = alpha(theme.palette.background.paper, 0.8);
+  const hoverBackground = alpha(theme.palette.primary.main, 0.1);
+  const borderColor = alpha(theme.palette.divider, 0.3);
 
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
@@ -197,9 +200,7 @@ const Home = () => {
                       flexDirection: 'column',
                       p: 3,
                       borderRadius: 3,
-                      background: theme.palette.mode === 'dark' 
-                        ? alpha(theme.palette.background.paper, 0.8)
-                        : alpha(theme.palette.background.paper, 0.9),
+                      background: cardBackground,
                       backdropFilter: 'blur(10px)'
                     }}
                   >

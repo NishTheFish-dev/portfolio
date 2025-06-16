@@ -17,15 +17,13 @@ import {
   Container,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import LightModeIcon from '@mui/icons-material/LightMode';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
-import ColorModeContext from '../contexts/ColorModeContext';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
-  const colorMode = React.useContext(ColorModeContext);
   const [mobileOpen, setMobileOpen] = useState(false);
   const theme = useTheme();
+  const background = alpha(theme.palette.background.paper, 0.9);
+  const borderColor = theme.palette.divider;
   const location = useLocation();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -62,12 +60,10 @@ const Navbar = () => {
       sx={{
         width: 250,
         height: '100%',
-        background: theme.palette.mode === 'dark' 
-          ? alpha(theme.palette.background.paper, 0.9)
-          : alpha(theme.palette.background.paper, 0.95),
+        background: background,
         backdropFilter: 'blur(10px)',
         borderRight: '1px solid',
-        borderColor: theme.palette.divider,
+        borderColor: borderColor,
         p: 2,
       }}
     >
@@ -139,9 +135,7 @@ const Navbar = () => {
         position="sticky"
         elevation={0}
         sx={{
-          background: theme.palette.mode === 'dark' 
-            ? alpha(theme.palette.background.paper, 0.8)
-            : alpha(theme.palette.background.paper, 0.9),
+          background: background,
           backdropFilter: 'blur(10px)',
           borderBottom: '1px solid',
           borderColor: theme.palette.divider,
@@ -189,34 +183,50 @@ const Navbar = () => {
                   {menuItems.map((item) => (
                     <motion.div
                       key={item.text}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
                     >
                       <Button
                         component={RouterLink}
                         to={item.path}
                         sx={{
                           mx: 1,
-                          color: location.pathname === item.path 
-                            ? theme.palette.primary.main 
-                            : 'text.primary',
-                          fontWeight: location.pathname === item.path ? 600 : 400,
+                          background: location.pathname === item.path 
+                            ? `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`
+                            : 'none',
+                          WebkitBackgroundClip: 'text',
+                          WebkitTextFillColor: location.pathname === item.path 
+                            ? 'transparent' 
+                            : theme.palette.text.primary,
+                          '&:hover': {
+                            background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            bgcolor: 'transparent',
+                          },
+                          minWidth: 'auto',
+                          px: 2,
+                          py: 1,
+                          borderRadius: 2,
+                          textTransform: 'none',
+                          fontWeight: 500,
+                          fontSize: '0.9rem',
                           position: 'relative',
                           '&::after': {
                             content: '""',
                             position: 'absolute',
-                            width: location.pathname === item.path ? '100%' : '0%',
-                            height: '2px',
                             bottom: 0,
-                            left: 0,
-                            background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-                            transition: 'width 0.3s ease-in-out',
+                            left: '50%',
+                            transform: 'translateX(-50%)',
+                            width: location.pathname === item.path ? '80%' : '0%',
+                            height: '2px',
+                            backgroundColor: 'primary.main',
+                            transition: 'width 0.3s ease',
                           },
                           '&:hover::after': {
-                            width: '100%',
-                          },
-                          '&:hover': {
-                            background: 'transparent',
+                            width: '80%',
                           },
                         }}
                       >
@@ -225,19 +235,12 @@ const Navbar = () => {
                     </motion.div>
                   ))}
                 </AnimatePresence>
-                <IconButton onClick={colorMode.toggleColorMode} sx={{ ml: 1 }} color="inherit">
-                  {theme.palette.mode === 'dark' ? <LightModeIcon fontSize="small" /> : <DarkModeIcon fontSize="small" />}
-                </IconButton>
               </Box>
             )}
           </Toolbar>
         </Container>
       </AppBar>
-      {isMobile && (
-        <IconButton onClick={colorMode.toggleColorMode} sx={{ ml: 'auto', mr: 1 }} color="inherit">
-          {theme.palette.mode === 'dark' ? <LightModeIcon fontSize="small" /> : <DarkModeIcon fontSize="small" />}
-        </IconButton>
-      )}
+
       <Drawer
         variant="temporary"
         anchor="left"
