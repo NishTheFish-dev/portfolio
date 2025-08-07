@@ -200,26 +200,6 @@ const Projects = () => {
                       </Box>
                     </Box>
                   </CardContent>
-                  <CardActions sx={{ p: 2, pt: 0 }}>
-                    <Button
-                      startIcon={<GitHubIcon />}
-                      onClick={(e) => e.stopPropagation()}
-                      href={project.githubLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      size="small"
-                      sx={{
-                        textTransform: 'none',
-                        fontWeight: 500,
-                        color: 'text.secondary',
-                        '&:hover': {
-                          color: 'text.primary',
-                        },
-                      }}
-                    >
-                      Code
-                    </Button>
-                  </CardActions>
                 </Card>
               </motion.div>
             </Grid>
