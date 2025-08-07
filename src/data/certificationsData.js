@@ -62,7 +62,7 @@ const certificationsData = [
     description: 'Awarded for demonstrating proficiency in software and application design principles, including programming concepts, software development methodologies, and application design.',
     image: '/assets/certs/cert7.jpg',
     issueDate: 'March 2022',
-    issuer: 'Arizona Department of Education Career and Technical Education'
+    issuer: 'Arizona Department of Education'
   }
 ];
 

@@ -501,20 +501,18 @@ const About = () => {
                                 <Typography 
                                   variant="caption" 
                                   color="text.secondary"
-                                  noWrap
                                   sx={{ 
-                                    fontSize: '0.75rem',
-                                    maxWidth: '60%'
+                                    fontSize: '0.75rem'
                                   }}
                                 >
-                                  {cert.issuer}
+                                  <strong>Issuer:</strong> {cert.issuer}
                                 </Typography>
                                 <Typography 
                                   variant="caption" 
                                   color="text.secondary"
                                   sx={{ fontSize: '0.75rem' }}
                                 >
-                                  {cert.issueDate}
+                                  <strong>Issued:</strong> {cert.issueDate}
                                 </Typography>
                               </Box>
                             </Box>
