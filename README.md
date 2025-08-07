@@ -17,7 +17,7 @@ A modern, responsive portfolio website showcasing my work as a Computer Science 
 - Framer Motion for animations and transitions
 - React Icons for scalable vector icons
 - GitHub API integration for project data
-- Responsive design with CSS Grid and Flexbox
+- Responsive design with Tailwind CSS and Flexbox
 
 ## Contact
 
