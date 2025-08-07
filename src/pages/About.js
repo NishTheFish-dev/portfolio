@@ -23,6 +23,8 @@ import WorkIcon from '@mui/icons-material/Work';
 import CodeIcon from '@mui/icons-material/Code';
 import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 import CloseIcon from '@mui/icons-material/Close';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { Button } from '@mui/material';
 import certificationsData from '../data/certificationsData';
 
 const About = () => {
@@ -578,6 +580,20 @@ const About = () => {
                     <Typography variant="body1" color="text.secondary" sx={{ mb: 2, lineHeight: 1.7 }}>
                       {selectedCert?.description}
                     </Typography>
+
+                    {selectedCert?.certificateLink && (
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        startIcon={<OpenInNewIcon />}
+                        href={selectedCert.certificateLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        sx={{ mb: 2 }}
+                      >
+                        View Certificate
+                      </Button>
+                    )}
                     <Box sx={{ 
                       mt: 3, 
                       pt: 2, 

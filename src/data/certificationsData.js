@@ -1,5 +1,14 @@
 const certificationsData = [
   {
+    id: 8,
+    title: 'Microsoft Certified: Azure Fundamentals',
+    description: 'Demonstrates foundational level knowledge of cloud concepts, Azure services, Azure workloads, security and privacy in Azure, as well as Azure pricing and support.',
+    image: '/assets/certs/azure.png',
+    issueDate: 'July 2025',
+    issuer: 'Microsoft',
+    certificateLink: 'https://learn.microsoft.com/en-us/users/nishanthpallapu/credentials/3916ee5b14cf57a0'
+  },
+  {
     id: 1,
     title: 'Microsoft Technology Associate: Networking Fundamentals',
     description: 'Validates understanding of network infrastructures, network hardware, and protocols and services. Demonstrates knowledge of network topologies, hardware, and protocols including TCP/IP, DNS, and DHCP.',
