@@ -3,11 +3,12 @@ import { Container, Typography, List, ListItemButton, ListItemText, Box, useThem
 import { motion } from 'framer-motion';
 import { Routes, Route, Link } from 'react-router-dom';
 import SpyChartDemo from '../demos/SpyChartDemo';
+import RayTracingDemo from '../demos/RayTracingDemo';
 
 const demoItems = [
   { label: '$SPY Candlestick Chart', path: 'spy-chart', element: <SpyChartDemo /> },
+  { label: 'Ray Tracing (Light & Shadows)', path: 'ray-tracing', element: <RayTracingDemo /> },
 ];
-
 
 const DemoList = () => {
   const theme = useTheme();
