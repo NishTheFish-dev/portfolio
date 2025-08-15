@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 const CANVAS_HEIGHT = 520; // CSS pixels; responsive width
 const WALL_MARGIN = 24;
+const OCCLUDER_THICKNESS = 10; // px – used for shadow width and wall drawing
 
 function dist(a, b) {
   const dx = a.x - b.x;
@@ -28,7 +29,7 @@ function raySegmentIntersection(p, r, a, b) {
   const qpxr = cross(q_p.x, q_p.y, r.x, r.y);
 
   if (Math.abs(rxs) < 1e-9) {
-    // Parallel or collinear: ignore for this demo
+    // Parallel or collinear: ignore for now
     return null;
   }
   const t = cross(q_p.x, q_p.y, s.x, s.y) / rxs; // along ray
@@ -152,6 +153,25 @@ function RayTracingDemo() {
     const maxDist = Math.hypot(w, h);
     const points = [];
 
+    // Expand each wall segment into a rectangle (finite thickness occluder)
+    const occluderSegments = [];
+    const ht = OCCLUDER_THICKNESS / 2;
+    for (const [a, b] of wallSegments) {
+      const dx = b.x - a.x;
+      const dy = b.y - a.y;
+      const len = Math.hypot(dx, dy);
+      if (len < 1e-6) continue;
+      const ux = dx / len;
+      const uy = dy / len;
+      const nx = -uy; // left normal
+      const ny = ux;
+      const p0 = { x: a.x - nx * ht, y: a.y - ny * ht };
+      const p1 = { x: b.x - nx * ht, y: b.y - ny * ht };
+      const p2 = { x: b.x + nx * ht, y: b.y + ny * ht };
+      const p3 = { x: a.x + nx * ht, y: a.y + ny * ht };
+      occluderSegments.push([p0, p1], [p1, p2], [p2, p3], [p3, p0]);
+    }
+
     // Add invisible canvas boundary as termination segments (not drawn)
     const rectSegments = [
       [{ x: 0, y: 0 }, { x: w, y: 0 }],
@@ -159,7 +179,7 @@ function RayTracingDemo() {
       [{ x: w, y: h }, { x: 0, y: h }],
       [{ x: 0, y: h }, { x: 0, y: 0 }],
     ];
-    const allSegments = wallSegments.concat(rectSegments);
+    const allSegments = occluderSegments.concat(rectSegments);
 
     // Gather unique vertices from endpoints and intersections (including with canvas edges)
     const rawVertices = [];
@@ -283,9 +303,11 @@ function RayTracingDemo() {
     }
     ctx.restore();
 
-    // Draw walls
+    // Draw walls with the same thickness used for occlusion so the visual width matches the shadow width
     ctx.strokeStyle = theme.palette.mode === 'dark' ? '#cfd8dc' : '#263238';
-    ctx.lineWidth = 2;
+    ctx.lineWidth = OCCLUDER_THICKNESS;
+    ctx.lineCap = 'butt';
+    ctx.lineJoin = 'miter';
     walls.forEach(([a, b]) => {
       ctx.beginPath();
       ctx.moveTo(a.x, a.y);
