@@ -4,10 +4,12 @@ import { motion } from 'framer-motion';
 import { Routes, Route, Link } from 'react-router-dom';
 import SpyChartDemo from '../demos/SpyChartDemo';
 import RayTracingDemo from '../demos/RayTracingDemo';
+import CollaborativeWhiteboardDemo from '../demos/CollaborativeWhiteboardDemo';
 
 const demoItems = [
   { label: '$SPY Candlestick Chart', path: 'spy-chart', element: <SpyChartDemo /> },
   { label: 'Ray Tracing (Light & Shadows)', path: 'ray-tracing', element: <RayTracingDemo /> },
+  { label: 'Collaborative Whiteboard', path: 'collaborative-whiteboard', element: <CollaborativeWhiteboardDemo /> },
 ];
 
 const DemoList = () => {

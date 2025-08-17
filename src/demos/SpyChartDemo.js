@@ -22,7 +22,6 @@ import {
   Bar,
 } from 'recharts';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import RefreshIcon from '@mui/icons-material/Refresh';
 import { useNavigate } from 'react-router-dom';
 
 // Cache configuration
@@ -309,7 +308,7 @@ const SpyChartDemo = () => {
     } finally {
       setLoading(false);
     }
-  }, [timeframe]);
+  }, []);
 
   useEffect(() => {
     loadData(timeframe);
@@ -391,19 +390,14 @@ const SpyChartDemo = () => {
 
   return (
     <Container component={motion.div} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.4 }} maxWidth="lg" sx={{ py: { xs: 4, md: 8 } }}>
-      <Box sx={{ mb: 2 }}>
-        <IconButton onClick={() => navigate('/demos')} size="large">
+      <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
+        <IconButton onClick={() => navigate('/demos')} size="large" aria-label="Back to demos">
           <ArrowBackIcon />
         </IconButton>
+        <Typography variant="h5" sx={{ fontWeight: 700 }}>
+          $SPY Candlestick Chart
+        </Typography>
       </Box>
-      <Typography variant="h3" align="center" gutterBottom sx={{
-          fontWeight: 700,
-          background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-        }}>
-        $SPY Candlestick Chart
-      </Typography>
 
       <Box sx={{ mb: 3, display: 'flex', justifyContent: 'center' }}>
         <FormControl size="small" sx={{ minWidth: 160 }}>
