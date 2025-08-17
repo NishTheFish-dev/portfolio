@@ -36,7 +36,7 @@ function CollaborativeWhiteboardDemo() {
         <Button
           variant="outlined"
           size="small"
-          href="https://nishpallapu.netlify.app"
+          href="https://collaborativewhiteboard-bice.vercel.app/"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -63,7 +63,7 @@ function CollaborativeWhiteboardDemo() {
           }}
         >
           <iframe
-            src="https://nishpallapu.netlify.app"
+            src="https://collaborativewhiteboard-bice.vercel.app/"
             title="Collaborative Whiteboard"
             style={{ border: 0, width: '100%', height: '100%' }}
             allow="fullscreen"
