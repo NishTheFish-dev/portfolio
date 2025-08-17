@@ -94,7 +94,7 @@ function CollaborativeWhiteboardDemo() {
           <Button
             variant="contained"
             color="primary"
-            href="https://nishpallapu.netlify.app"
+            href="https://collaborativewhiteboard-bice.vercel.app/"
             target="_blank"
             rel="noopener noreferrer"
           >
