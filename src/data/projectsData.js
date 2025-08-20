@@ -1,5 +1,28 @@
 const projectsData = [
   {
+    slug: 'collaborative-whiteboard',
+    title: 'Collaborative Whiteboard',
+    description: 'A modern, real-time collaborative whiteboard showcasing multiuser drawing with WebSockets and an interactive canvas. Embedded as a demo on this site.',
+    longDescription: `This is a modern, real-time collaborative whiteboard built with React and Socket.IO. Users join rooms using time-limited codes and see each other's live cursors while drawing freehand strokes, shapes (rect/line/circle), and text. The app supports PNG export, protected board reset, and can be embedded via iframe with strict CSP (frame-ancestors) headers.
+
+Under the hood, the frontend uses React + TypeScript with Vite, Tailwind CSS for styling, and React Konva for the canvas layer. The backend is Node.js/Express with Socket.io and Helmet, and optional MongoDB Atlas persistence for room state. Deployed with a Vercel frontend and a Render-hosted Socket.IO server.`,
+    technologies: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'React Konva', 'Socket.IO', 'Node.js', 'Express', 'Helmet', 'MongoDB Atlas', 'WebSockets', 'Real-time Systems'],
+    githubLink: 'https://github.com/NishTheFish-dev/collaborativewhiteboard',
+    demoLink: 'https://collaborativewhiteboard-bice.vercel.app/',
+    images: [],
+    features: [
+      'Real-time multiuser drawing powered by Socket.IO',
+      'Freehand strokes, shapes (rect/line/circle), and text elements',
+      'Live cursors with user name and color',
+      'Time-limited collaboration codes for secure room joining',
+      'PNG export of the canvas',
+      'Board reset (protected by token)',
+      'Embeddable via iframe with CSP `frame-ancestors`',
+      'MongoDB persistence for room state if needed',
+      'Responsive UI (Tailwind CSS) and dark theme',
+    ],
+  },
+  {
     slug: 'youtube-music-client',
     
     title: 'YouTube Music Client',
