@@ -59,7 +59,7 @@ const About = () => {
     {
       title: 'Undergraduate Teaching Assistant',
       company: 'Arizona State University - CSE365',
-      period: 'Jan 2025 – May 2025',
+      period: 'Jan 2025 – Present',
       description: [
         'Assisted a class of ~900 students with coursework in Information Assurance.',
         'Taught topics including Network Security, Cryptography, Assembly, Penetration Testing, Reverse Engineering, and Binary Exploitation using the pwn.college platform with a capture-the-flag format.',

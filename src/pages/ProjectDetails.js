@@ -15,6 +15,7 @@ import {
 import GitHubIcon from '@mui/icons-material/GitHub';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CloseIcon from '@mui/icons-material/Close';
+import LaunchIcon from '@mui/icons-material/Launch';
 import { motion } from 'framer-motion';
 
 import projectsData from '../data/projectsData';
@@ -78,17 +79,33 @@ const ProjectDetails = () => {
         ))}
       </Box>
 
-      {project.githubLink && (
-        <Button
-          variant="contained"
-          startIcon={<GitHubIcon />}
-          href={project.githubLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          sx={{ textTransform: 'none' }}
-        >
-          View Code on GitHub
-        </Button>
+      {(project.githubLink || project.demoLink) && (
+        <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mb: 1 }}>
+          {project.githubLink && (
+            <Button
+              variant="contained"
+              startIcon={<GitHubIcon />}
+              href={project.githubLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              sx={{ textTransform: 'none' }}
+            >
+              View Code on GitHub
+            </Button>
+          )}
+          {project.demoLink && (
+            <Button
+              variant="outlined"
+              endIcon={<LaunchIcon />}
+              href={project.demoLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              sx={{ textTransform: 'none' }}
+            >
+              Live Demo
+            </Button>
+          )}
+        </Box>
       )}
       {project.longDescription && (
         <Typography variant="body1" color="text.secondary" sx={{ whiteSpace: 'pre-line', mt: 3 }}>

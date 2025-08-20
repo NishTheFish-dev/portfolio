@@ -2,14 +2,18 @@ const projectsData = [
   {
     slug: 'collaborative-whiteboard',
     title: 'Collaborative Whiteboard',
-    description: 'A modern, real-time collaborative whiteboard showcasing multiuser drawing with WebSockets and an interactive canvas. Embedded as a demo on this site.',
-    longDescription: `This is a modern, real-time collaborative whiteboard built with React and Socket.IO. Users join rooms using time-limited codes and see each other's live cursors while drawing freehand strokes, shapes (rect/line/circle), and text. The app supports PNG export, protected board reset, and can be embedded via iframe with strict CSP (frame-ancestors) headers.
+    description: 'A simple and real-time collaborative whiteboard showcasing multiuser drawing with WebSockets and an interactive canvas. Embedded as a demo on this site.',
+    longDescription: `This is a simple real-time collaborative whiteboard built with React and Socket.IO. Users can join rooms using time-limited codes and see each other's live cursors while drawing freehand strokes, shapes (rect/line/circle), and text. The app supports PNG export, protected board reset, and can be embedded via iframe for greater versatility.
 
-Under the hood, the frontend uses React + TypeScript with Vite, Tailwind CSS for styling, and React Konva for the canvas layer. The backend is Node.js/Express with Socket.io and Helmet, and optional MongoDB Atlas persistence for room state. Deployed with a Vercel frontend and a Render-hosted Socket.IO server.`,
+In this project, the frontend uses React + TypeScript with Vite, Tailwind CSS for styling, and React Konva for the canvas layer. The backend is Node.js/Express with Socket.io and Helmet, and MongoDB Atlas persistence for room state. It is deployed with a Vercel frontend and a Render-hosted Socket.IO server.
+
+I wanted to build my first web application with real-time collaboration features, so I decided to try making a whiteboard web app that was simple to use and easy to integrate into any website. The hardest part of creating this project was learning how to implement WebSockets, as well as communication between the app and the server for coordinating join codes. CORS issues soon arose as I tried to embed the app into my site, but those were easily fixed by setting the necessary permissions for the whiteboard site. Overall this was a fun project to explore real-time web collaboration, and it helped me develop my knowledge on real-time systems, as well as further my knowledge of building web applications with React.`,
     technologies: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'React Konva', 'Socket.IO', 'Node.js', 'Express', 'Helmet', 'MongoDB Atlas', 'WebSockets', 'Real-time Systems'],
     githubLink: 'https://github.com/NishTheFish-dev/collaborativewhiteboard',
     demoLink: 'https://collaborativewhiteboard-bice.vercel.app/',
-    images: [],
+    images: [
+      { src: '/assets/collabwhiteboard1.png', alt: 'Collaborative Whiteboard - multiuser drawing' }
+    ],
     features: [
       'Real-time multiuser drawing powered by Socket.IO',
       'Freehand strokes, shapes (rect/line/circle), and text elements',
@@ -18,8 +22,7 @@ Under the hood, the frontend uses React + TypeScript with Vite, Tailwind CSS for
       'PNG export of the canvas',
       'Board reset (protected by token)',
       'Embeddable via iframe with CSP `frame-ancestors`',
-      'MongoDB persistence for room state if needed',
-      'Responsive UI (Tailwind CSS) and dark theme',
+      'MongoDB persistence for room state'
     ],
   },
   {
