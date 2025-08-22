@@ -131,7 +131,7 @@ Key technical aspects of this project include secure password hashing, role-base
     title: 'Virtual Board Game Concept',
     description: 'Worked on a team designing a board game for elementary and middle school students to connect with over COVID. Developed a project timeline and design specification according to user needs. Received Grand Prize award and recognition letter from AZ Congressman David Schweikert.',
     technologies: ['Game Design', 'Project Management', 'User-Centered Design'],
-    githubLink: '#',
+    githubLink: '',
     demoLink: '',
     images: [
       { src: '/assets/concept1.jpg', alt: 'Virtual Board Game Concept Design' }
