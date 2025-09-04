@@ -13,8 +13,6 @@ import { motion } from 'framer-motion';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import EmailIcon from '@mui/icons-material/Email';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import PhoneIcon from '@mui/icons-material/Phone';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
 
 const Contact = () => {
@@ -43,25 +41,7 @@ const Contact = () => {
     },
   };
 
-  const contactInfo = [
-    {
-      icon: <LocationOnIcon fontSize="large" color="primary" />,
-      title: 'Location',
-      text: 'Tempe, AZ',
-    },
-    {
-      icon: <EmailIcon fontSize="large" color="primary" />,
-      title: 'Email',
-      text: 'contact@nishpallapu.com',
-      url: 'mailto:contact@nishpallapu.com',
-    },
-    {
-      icon: <PhoneIcon fontSize="large" color="primary" />,
-      title: 'Phone',
-      text: '(602) 703-6949',
-      url: 'tel:16027036949',
-    },
-  ];
+  
 
   const socialLinks = [
     {
@@ -117,83 +97,70 @@ const Contact = () => {
                   borderColor: borderColor,
                 }}
               >
-                <Box textAlign="center" mb={6}>
-                  <Typography variant="body1" color="text.secondary" sx={{ maxWidth: '700px', mx: 'auto' }}>
-                    Feel free to reach out through any of these channels!
+
+                {/* Social Links */}
+                <Box sx={{ mt: 2, textAlign: 'center' }}>
+                  <Typography variant="h5" component="h3" sx={{ mb: 3, fontWeight: 600 }}>
+                    Connect With Me!
                   </Typography>
-                </Box>
-                
-                <Grid container spacing={4} justifyContent="center">
-                  {contactInfo.map((item, index) => (
-                    <Grid item xs={12} md={4} key={index} sx={{ display: 'flex', justifyContent: 'center' }}>
-                      <motion.div 
-                        variants={fadeInUp}
-                        whileHover={{ y: -5 }}
-                        transition={{ duration: 0.2 }}
+                  {/* Email card inside section (smaller) */}
+                  <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
+                    <motion.div 
+                      variants={fadeInUp}
+                      whileHover={{ y: -2 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Box 
+                        component="a"
+                        href="mailto:contact@nishpallapu.com"
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          textAlign: 'center',
+                          px: 3,
+                          py: 2,
+                          borderRadius: 2,
+                          textDecoration: 'none',
+                          color: 'text.primary',
+                          bgcolor: darkBackground,
+                          border: '1px solid',
+                          borderColor: borderColor,
+                          transition: 'all 0.3s ease-in-out',
+                          '&:hover': {
+                            transform: 'translateY(-2px)',
+                            boxShadow: theme.shadows[3],
+                            bgcolor: hoverBackground,
+                          },
+                        }}
                       >
                         <Box 
-                          component="a"
-                          href={item.url || '#'}
-                          sx={{
+                          sx={{ 
                             display: 'flex',
-                            flexDirection: 'column',
                             alignItems: 'center',
-                            textAlign: 'center',
-                            p: 3,
-                            height: '100%',
-                            borderRadius: 3,
-                            textDecoration: 'none',
-                            color: 'text.primary',
-                            bgcolor: darkBackground,
-                            border: '1px solid',
-                            borderColor: borderColor,
-                            transition: 'all 0.3s ease-in-out',
-                            '&:hover': {
-                              transform: 'translateY(-5px)',
-                              boxShadow: theme.shadows[4],
-                              bgcolor: hoverBackground,
+                            justifyContent: 'center',
+                            width: 48,
+                            height: 48,
+                            borderRadius: '50%',
+                            bgcolor: hoverBackground,
+                            color: 'primary.main',
+                            mb: 1,
+                            '& .MuiSvgIcon-root': {
+                              fontSize: '1.5rem',
                             },
                           }}
                         >
-                          <Box 
-                            sx={{ 
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              width: 70,
-                              height: 70,
-                              borderRadius: '50%',
-                              bgcolor: hoverBackground,
-                              color: 'primary.main',
-                              mb: 2,
-                              '& .MuiSvgIcon-root': {
-                                fontSize: '2rem',
-                                transition: 'transform 0.3s ease-in-out',
-                              },
-                              '&:hover .MuiSvgIcon-root': {
-                                transform: 'scale(1.1)',
-                              },
-                            }}
-                          >
-                            {React.cloneElement(item.icon, { fontSize: 'large' })}
-                          </Box>
-                          <Typography variant="h6" component="h3" sx={{ mb: 1, fontWeight: 600 }}>
-                            {item.title}
-                          </Typography>
-                          <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-                            {item.text}
-                          </Typography>
+                          {React.cloneElement(<EmailIcon />, { fontSize: 'small' })}
                         </Box>
-                      </motion.div>
-                    </Grid>
-                  ))}
-                </Grid>
-
-                {/* Social Links */}
-                <Box sx={{ mt: 6, textAlign: 'center' }}>
-                  <Typography variant="h5" component="h3" sx={{ mb: 3, fontWeight: 600 }}>
-                    Connect With Me
-                  </Typography>
+                        <Typography variant="subtitle1" component="h3" sx={{ mb: 0.5, fontWeight: 600 }}>
+                          Email
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          contact@nishpallapu.com
+                        </Typography>
+                      </Box>
+                    </motion.div>
+                  </Box>
                   <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, flexWrap: 'wrap' }}>
                     {socialLinks.map((social, index) => (
                       <motion.div
